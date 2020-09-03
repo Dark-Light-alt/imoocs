@@ -128,7 +128,6 @@
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        this.directionList = res.data.directionList
         this.findCourseByDirection(this.directionList[0].directionId)
       },
       // 课程方向被选中

@@ -11,17 +11,23 @@
       </div>
     </div>
     <div class="main">
-      <el-card v-for="item in monographList" :key="item.id">
+      <el-card v-for="(item,index) in monographList" :key="index">
         <div class="content">
           <a>
-            <el-image :src="require('@/assets/img/test.png')"></el-image>
+            <el-image :src="item.cover"></el-image>
           </a>
           <div class="info">
-            <h3>{{item.name}}</h3>
-            <h5>{{item.about}}</h5>
-            <el-image :src="item.teacherPhoto"></el-image>
-            <span class="name">{{item.teacherName}}</span> /
-            <span>{{item.teacherPosition}}</span>
+            <h3>{{item.monographName}}</h3>
+            <h5>{{item.highlights}}</h5>
+            <el-image :src="item.photo"></el-image>
+            <div class="article" v-for="(chapter,index) in item.chapterList" :key="index">
+              <span v-for="article in chapter.articleList" :key="article.articleId">
+                <el-tag v-if="article.tryReading==1" type="primary" size="mini">试读</el-tag>
+                {{article.articleName}}
+              </span>
+            </div>
+            <span class="name">{{item.employeeInfo.employeeName}}</span> /
+            <span>{{item.employeeInfo.position.positionName}}</span>
             <span class="price">￥ {{item.price}}</span>
           </div>
         </div>
@@ -35,45 +41,21 @@
     name: 'Monograph',
     data: function () {
       return {
-        monographList: [
-          {
-            id: 1,
-            name: '前端高手必学课—剖析 React 内部运行机制',
-            about: '让你具备框架设计者思维与视野',
-            price: 42.0,
-            teacherPhoto: 'https://img3.sycdn.imooc.com/5b8ce4920001e61c02000190-140-140.jpg',
-            teacherName: '上古鹏',
-            teacherPosition: '资深前端工程师',
-          },
-          {
-            id: 2,
-            name: '前端高手必学课—剖析 React 内部运行机制',
-            about: '让你具备框架设计者思维与视野',
-            price: 42.0,
-            teacherPhoto: 'https://img3.sycdn.imooc.com/5b8ce4920001e61c02000190-140-140.jpg',
-            teacherName: '上古鹏',
-            teacherPosition: '资深前端工程师',
-          },
-          {
-            id: 3,
-            name: '前端高手必学课—剖析 React 内部运行机制',
-            about: '让你具备框架设计者思维与视野',
-            price: 42.0,
-            teacherPhoto: 'https://img3.sycdn.imooc.com/5b8ce4920001e61c02000190-140-140.jpg',
-            teacherName: '上古鹏',
-            teacherPosition: '资深前端工程师',
-          },
-          {
-            id: 4,
-            name: '前端高手必学课—剖析 React 内部运行机制',
-            about: '让你具备框架设计者思维与视野',
-            price: 42.0,
-            teacherPhoto: 'https://img3.sycdn.imooc.com/5b8ce4920001e61c02000190-140-140.jpg',
-            teacherName: '上古鹏',
-            teacherPosition: '资深前端工程师',
-          }
-        ]
+        monographList: []
       }
+    },
+    methods:{
+      //查询所有专刊
+      findMonographList: async function () {
+        const {data: res} = await this.$http.get('MonographController/listAllMonograph');
+        if (!res.meta.access) {
+          return this.$message.error(res.meta.msg)
+        }
+        console.log(res.data.monographList);
+        this.monographList = res.data.monographList;
+      }
+    },created:function(){
+      this.findMonographList();
     }
   }
 </script>
@@ -179,6 +161,10 @@
           }
         }
       }
+    }
+
+    .article {
+      font-size: 13px;
     }
   }
 </style>
