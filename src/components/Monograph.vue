@@ -1,7 +1,7 @@
 <template>
   <div class="monograph">
     <div class="header">
-      <div class="inner">
+        <div class="inner">
         <el-image :src="require('@/assets/img/monograph-log.png')"></el-image>
         <p>
           共
@@ -13,19 +13,21 @@
     <div class="main">
       <el-card v-for="(item,index) in monographList" :key="index">
         <div class="content">
-          <a>
+          <!--专刊头像-->
+          <a @click="monographDetials(item)">
             <el-image :src="item.cover"></el-image>
           </a>
           <div class="info">
-            <h3>{{item.monographName}}</h3>
+            <h3 @click="monographDetials(item)">{{item.monographName}}</h3>
             <h5>{{item.highlights}}</h5>
-            <el-image :src="item.photo"></el-image>
-            <div class="article" v-for="(chapter,index) in item.chapterList" :key="index">
-              <span v-for="article in chapter.articleList" :key="article.articleId">
+            <div v-for="(chapter,index) in item.chapterList" :key="index">
+              <span class="article" v-for="article in chapter.articleList" :key="article.articleId" @click="readArticle(article.articleId)">
                 <el-tag v-if="article.tryReading==1" type="primary" size="mini">试读</el-tag>
-                {{article.articleName}}
+                <span>{{article.articleName}}</span>
               </span>
             </div>
+            <!--员工头像-->
+            <el-image :src="item.photo"></el-image>
             <span class="name">{{item.employeeInfo.employeeName}}</span> /
             <span>{{item.employeeInfo.position.positionName}}</span>
             <span class="price">￥ {{item.price}}</span>
@@ -53,6 +55,13 @@
         }
         console.log(res.data.monographList);
         this.monographList = res.data.monographList;
+      },readArticle:function(articleId){
+        //跳转到文章页面
+        this.$router.push({name:"Article",query:{articleId:articleId}});
+      },monographDetials(monograph){
+        console.log(monograph);
+        //跳转到专刊详情页面
+        this.$router.push({name:"MonographDetials",query:{monograph:monograph}});
       }
     },created:function(){
       this.findMonographList();
@@ -165,6 +174,12 @@
 
     .article {
       font-size: 13px;
+      margin-right: 15px;
+      line-height: 30px;
+    }
+
+    .article:hover {
+      color: rgb(51, 119, 255);
     }
   }
 </style>

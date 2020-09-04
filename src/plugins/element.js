@@ -28,7 +28,8 @@ import {
   TabPane,
   Tabs,
   Tag,
-  Pagination, Menu, MenuItem
+  Pagination, Menu, MenuItem,
+  Tooltip
 } from 'element-ui'
 
 Vue.prototype.$message = Message
@@ -63,3 +64,5 @@ Vue.use(Divider)
 Vue.use(Pagination)
 Vue.use(Menu)
 Vue.use(MenuItem)
+Vue.use(Tooltip)
+

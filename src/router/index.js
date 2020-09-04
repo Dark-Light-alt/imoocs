@@ -40,6 +40,11 @@ const routes = [
         component: () => import('../components/ShoppingCart'),
       },
       {
+        path: '/monographDetials',
+        name: 'MonographDetials',
+        component: () => import('../components/MonographDetials'),
+      },
+      {
         path: '/myCourses',
         name: 'MyCourses',
         component: () => import('../components/MyCourses'),
@@ -57,6 +62,11 @@ const routes = [
     path: '/refresh',
     name: 'Refresh',
     component: () => import('../views/Refresh')
+  },
+  {
+    path: '/article',
+    name: 'Article',
+    component: () => import('../components/Article')
   }
 ]
 
