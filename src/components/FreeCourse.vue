@@ -15,7 +15,7 @@
               <span class="title">方向：</span>
               <div>
                 <el-tag type="info" v-for="item in directionList" :key="item.directionId" effect="plain"
-                        @click="directionClass(item.directionId)" :class="{ischeck:item.directionId==directionCurrent}">
+                        @click="directionClick(item.directionId)" :class="{ischeck:item.directionId==directionCurrent}">
                   {{item.directionName}}
                 </el-tag>
               </div>
@@ -24,7 +24,7 @@
               <span class="title">分类：</span>
               <div>
                 <el-tag type="info" v-for="item in typeList" :key="item.typeId" effect="plain"
-                        @click="typeClass(item.typeId)" :class="{ischeck:item.typeId==typeCurrent}">{{item.typeName}}
+                        @click="typeClick(item.typeId)" :class="{ischeck:item.typeId==typeCurrent}">{{item.typeName}}
                 </el-tag>
               </div>
             </div>
@@ -32,7 +32,7 @@
               <span class="title">难度：</span>
               <div>
                 <el-tag type="info" v-for="item in levelList" :key="item.level" effect="plain"
-                        @click="levelClass(item.level)" :class="{ischeck:item.level==levelCurrent}">{{item.label}}
+                        @click="levelClick(item.level)" :class="{ischeck:item.level==levelCurrent}">{{item.label}}
                 </el-tag>
               </div>
             </div>
@@ -42,7 +42,8 @@
     </div>
     <div class="container">
       <div class="course-list">
-        <div class="course-card-container" v-for="item in courseList" :key="item.id">
+        <div class="course-card-container" v-for="item in courseList" :key="item.id"
+             @click="clickCourse(item.courseId)">
           <a class="course-card">
             <div class="course-card-top">
               <el-image :src="item.cover"></el-image>
@@ -56,9 +57,10 @@
                   <span v-if="item.courseLevel == 2">中级</span>
                   <span v-if="item.courseLevel == 3">高级</span>
                   <span>
-                    <i class="el-icon-user"></i>
+                    <i class="el-icon-user-solid"></i>
                     <span>{{item.peoples}}</span>
                   </span>
+                  <span class="evaluation">{{item.evaluates}}人评价</span>
                 </div>
                 <p class="course-card-desc">{{item.courseAbout}}</p>
               </div>
@@ -75,14 +77,14 @@
     name: 'FreeCourse',
     data: function () {
       return {
-        directionCurrent: '-1',
+        directionCurrent: null,
         directionList: [],
-        typeCurrent: '-1',
+        typeCurrent: null,
         typeList: [],
-        levelCurrent: '-1',
+        levelCurrent: null,
         levelList: [
           {
-            level: '-1',
+            level: null,
             label: '全部'
           },
           {
@@ -106,13 +108,19 @@
       }
     },
     methods: {
+      clickCourse: function (courseId) {
+        this.$router.push({
+          name: 'FreeCourseLearn',
+          query: { courseId: courseId }
+        })
+      },
       findDirectionList: async function () {
         const { data: res } = await this.$http.get('DirectionController/findAll')
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
         let direction = [{
-          directionId: '-1',
+          directionId: null,
           directionName: '全部'
         }].concat(res.data.directionList)
 
@@ -124,59 +132,60 @@
           return this.$message.error(res.meta.msg)
         }
         let type = [{
-          typeId: '-1',
+          typeId: null,
           typeName: '全部'
         }].concat(res.data.typeList)
         this.typeList = type
       },
-      findByDirectionId: async function (directionId) {
+      findByTypeDirectionId: async function (directionId) {
         const { data: res } = await this.$http.get(`TypeController/findByDirectionId/${directionId}`)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
         let type = [{
-          typeId: '-1',
+          typeId: null,
           typeName: '全部'
         }].concat(res.data.typeList)
         this.typeList = type
       },
-      findAssignFreeCourse: async function () {
-        let request = {
+      findAssignCourse: async function () {
+        let params = {
+          isfree: 0,
           directionId: this.directionCurrent,
           typeId: this.typeCurrent,
           level: this.levelCurrent
         }
-        const { data: res } = await this.$http.post('CourseController/findAssignFreeCourse', request)
+        const { data: res } = await this.$http.post('CourseController/findAssignCourse', params)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
 
         this.courseList = res.data.courseList
       },
-      directionClass: function (directionId) {
-        if ('-1' === directionId) {
-          this.typeCurrent = '-1'
-          this.levelCurrent = '-1'
+      directionClick: function (directionId) {
+        if (null === directionId) {
+          this.typeCurrent = null
+          this.levelCurrent = null
           this.findTypeList()
         } else {
-          this.findByDirectionId(directionId)
+          this.findByTypeDirectionId(directionId)
         }
         this.directionCurrent = directionId
-        this.findAssignFreeCourse()
+        this.findAssignCourse()
       },
-      typeClass: function (typeId) {
+      typeClick: function (typeId) {
         this.typeCurrent = typeId
-        this.findAssignFreeCourse()
+        this.findAssignCourse()
       },
-      levelClass: function (level) {
+      levelClick: function (level) {
         this.levelCurrent = level
-        this.findAssignFreeCourse()
+        this.findAssignCourse()
       }
     },
     created: function () {
       this.findDirectionList()
       this.findTypeList()
-      this.findAssignFreeCourse()
+      this.findAssignCourse()
     }
   }
 </script>
@@ -257,8 +266,9 @@
   }
 
   .container {
-    width: 1200px;
-    margin: 20px auto;
+    padding-top: 25px;
+    max-width: 94%;
+    margin: auto;
 
     .course-list {
       padding: 10px 0 20px;
@@ -320,6 +330,10 @@
                 span {
                   display: inline-block;
                   margin-right: 12px;
+                }
+
+                .evaluation {
+                  float: right;
                 }
               }
 

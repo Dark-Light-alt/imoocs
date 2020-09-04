@@ -7,26 +7,26 @@
     </div>
     <div class="content">
       <el-card class="top">
-        <el-table :data="courseList" ref="cart" @selection-change="selectChange">
+        <el-table :data="shoppingList" ref="cart" @selection-change="selectChange">
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column label="课程">
             <template slot-scope="scope">
-              <el-image :src="scope.row.cover"></el-image>
+              <el-image :src="scope.row.course.cover"></el-image>
             </template>
           </el-table-column>
           <el-table-column label="详情">
             <template slot-scope="scope">
-              <router-link to="/">{{scope.row.name}}</router-link>
+              <router-link to="/">{{scope.row.course.courseName}}</router-link>
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="price">
             <template slot-scope="scope">
-              <span class="price">￥ {{scope.row.price}}</span>
+              <span class="price">￥ {{scope.row.course.price}}</span>
             </template>
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <i class="el-icon-close" @click="remove(scope.row.id)"></i>
+              <i class="el-icon-close" @click="remove(scope.row.shoppingCartId)"></i>
             </template>
           </el-table-column>
         </el-table>
@@ -47,25 +47,31 @@
     name: 'ShoppingCart',
     data: function () {
       return {
-        courseList: [
-          {
-            cover: 'https://imoocs.oss-cn-shanghai.aliyuncs.com/img/d14e1b2d-5556-4d5f-9b09-1f55213c5ae7.jpg',
-            name: '0到1快速构建自己的后台管理系统',
-            price: '299.00'
-          }, {
-            cover: 'https://imoocs.oss-cn-shanghai.aliyuncs.com/img/d14e1b2d-5556-4d5f-9b09-1f55213c5ae7.jpg',
-            name: '0到1快速构建自己的后台管理系统',
-            price: '291.22'
-          }
-        ],
+        shoppingList: [],
         totalPrice: 0
       }
     },
     methods: {
+      findAll: async function () {
+        let customerId = JSON.parse(sessionStorage.getItem('customer')).customerId
+        const { data: res } = await this.$http.get(`ShoppingCartController/findAll/${customerId}`)
+        if (!res.meta.access) {
+          return this.$message.error(res.meta.msg)
+        }
+
+        this.shoppingList = res.data.shoppingList
+      },
+      remove: async function (shoppingCartId) {
+        const { data: res } = await this.$http.delete(`ShoppingCartController/remove/${shoppingCartId}`)
+        if (!res.meta.access) {
+          return this.$message.error(res.meta.msg)
+        }
+        this.findAll()
+      },
       selectChange: function (rows) {
         let total = 0
         for (let i = 0; i < rows.length; i++) {
-          total += Number.parseFloat(rows[i].price)
+          total += Number.parseFloat(rows[i].course.price)
         }
         this.totalPrice = total
       },
@@ -76,11 +82,13 @@
         }
         let ids = []
         for (let i = 0; i < select.length; i++) {
-          ids.push(select[i].name)
+          ids.push(select[i].shoppingCartId)
         }
-
         console.log(ids)
       }
+    },
+    created: function () {
+      this.findAll()
     }
   }
 </script>
@@ -129,9 +137,7 @@
 
     .bottom {
       width: 1152px;
-      margin-top: 15px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 15px auto;
 
       .pay {
         float: right;

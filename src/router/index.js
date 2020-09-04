@@ -12,32 +12,52 @@ const routes = [
       {
         path: '/',
         name: 'Home',
-        component: () => import('../components/Home'),
+        component: () => import('../components/Home')
       },
       {
         path: '/inform',
         name: 'Inform',
-        component: () => import('../components/Inform'),
+        component: () => import('../components/Inform')
+      },
+      {
+        path: '/orderCenter',
+        name: 'OrderCenter',
+        component: () => import('../components/OrderCenter')
       },
       {
         path: '/freeCourse',
         name: 'FreeCourse',
-        component: () => import('../components/FreeCourse'),
+        component: () => import('../components/FreeCourse')
+      },
+      {
+        path: '/freeCourseLearn',
+        name: 'FreeCourseLearn',
+        component: () => import('../components/FreeCourseLearn')
       },
       {
         path: '/practiceCourse',
         name: 'PracticeCourse',
-        component: () => import('../components/PracticeCourse'),
+        component: () => import('../components/PracticeCourse')
+      },
+      {
+        path: '/practiceCourseBuy',
+        name: 'PracticeCourseBuy',
+        component: () => import('../components/PracticeCourseBuy')
+      },
+      {
+        path: '/confirmOrder',
+        name: 'ConfirmOrder',
+        component: () => import('../components/ConfirmOrder')
       },
       {
         path: '/monograph',
         name: 'Monograph',
-        component: () => import('../components/Monograph'),
+        component: () => import('../components/Monograph')
       },
       {
         path: '/shoppingCart',
         name: 'ShoppingCart',
-        component: () => import('../components/ShoppingCart'),
+        component: () => import('../components/ShoppingCart')
       },
       {
         path: '/monographDetials',
@@ -48,13 +68,7 @@ const routes = [
         path: '/myCourses',
         name: 'MyCourses',
         component: () => import('../components/MyCourses'),
-        children: [
-          {
-            path: '/test',
-            name: 'Test',
-            component: () => import('../components/Test')
-          }
-        ]
+        children: []
       }
     ]
   },
