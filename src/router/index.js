@@ -48,6 +48,16 @@ const routes = [
             path: '/test',
             name: 'Test',
             component: () => import('../components/Test')
+          },
+          {
+            path: '/personalCenter',
+            name: 'PersonalCenter',
+            component:()=>import('../components/PersonalCenter')
+          },
+          {
+            path: '/accountbinding',
+            name: 'Accountbinding',
+            component:()=>import('../components/Accountbinding')
           }
         ]
       }

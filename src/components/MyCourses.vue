@@ -15,19 +15,23 @@
     <div class="main">
       <div class="slider">
         <el-menu router>
-          <el-menu-item index="1-1" route="Test">
+          <el-menu-item index="1-1" route="Accountbinding">
             <i class="el-icon-menu"></i>
-            <span slot="title">我的课程</span>
+            <span slot="title">账号绑定</span>
           </el-menu-item>
-          <el-menu-item index="1-2" route="Test">
+          <el-menu-item index="1-2" route="PersonalCenter">
+            <i class="el-icon-menu"></i>
+            <span slot="title">个人信息</span>
+          </el-menu-item>
+          <el-menu-item index="1-3" route="Test">
             <i class="el-icon-menu"></i>
             <span slot="title">收藏</span>
           </el-menu-item>
-          <el-menu-item index="1-2" route="Test">
+          <el-menu-item index="1-4" route="Test">
             <i class="el-icon-menu"></i>
             <span slot="title">笔记</span>
           </el-menu-item>
-          <el-menu-item index="1-3" route="Test">
+          <el-menu-item index="1-5" route="Test">
             <i class="el-icon-menu"></i>
             <span slot="title">专栏</span>
           </el-menu-item>
@@ -46,7 +50,8 @@
     data: function () {
       return {
         photo: 'https://img3.sycdn.imooc.com/5b8ce4920001e61c02000190-140-140.jpg',
-        name: '爱慕课'
+        name: '爱慕课',
+        personname:'个人设置'
       }
     }
   }
