@@ -8,7 +8,7 @@
     <el-card>
       <h2>新上好课</h2>
       <div class="new-course-box" v-for="course in newCourseList" :key="course.courseId"
-           @click="courseCheck(course.courseId)">
+           @click="goPracticeCourse(course.courseId)">
         <el-image :src="course.cover"></el-image>
         <div class="new-course-content">
           <h3>{{course.courseName}}</h3>
@@ -21,20 +21,20 @@
               <span>
                     <i class="el-icon-s-custom">{{course.numberOfStudents}}</i>
               </span>
-              <span style="float: right;">{{course.peoples}}人评价</span>
+              <span style="float: right;">{{course.evaluates}}人评价</span>
             </div>
-            <div class="new-course-price">￥ {{course.price}}</div>
+            <div class="course-price">￥ {{course.price}}</div>
           </div>
         </div>
       </div>
     </el-card>
     <el-card>
       <h2>学习路线</h2>
-      <el-tabs :value="directionList[0].directionId" @tab-click="directionClick">
+      <el-tabs v-model="directionId" @tab-click="directionClick">
         <el-tab-pane v-for="direction in directionList" :label="direction.directionName" :name="direction.directionId"
                      :key="direction.directionId">
           <div class="course-by-direction-container" v-for="course in courseByDirectionList" :key="course.courseId"
-               @click="courseCheck(course.courseId)">
+               @click="goFreeCourseLearn(course.courseId)">
             <el-image :src="course.cover"></el-image>
             <div>
               <h4>{{course.courseName}}</h4>
@@ -52,7 +52,7 @@
       <el-tabs value="1" @tab-click="hotClick">
         <el-tab-pane label="实战课程" name="1">
           <div class="hot-course-box" v-for="course in hotCourseList" :key="course.courseId"
-               @click="courseCheck(course.courseId)">
+               @click="goPracticeCourse(course.courseId)">
             <el-image :src="course.cover"></el-image>
             <div class="hot-course-content">
               <h3>{{course.courseName}}</h3>
@@ -65,16 +65,16 @@
                   <span>
                     <i class="el-icon-s-custom">{{course.numberOfStudents}}</i>
                   </span>
-                  <span style="float: right;">{{course.peoples}}人评价</span>
+                  <span style="float: right;">{{course.evaluates}}人评价</span>
                 </div>
-                <div class="hot-course-price">￥ {{course.price}}</div>
+                <div class="course-price">￥ {{course.price}}</div>
               </div>
             </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="免费课程" name="0">
           <div class="hot-course-box" v-for="course in hotCourseList" :key="course.courseId"
-               @click="courseCheck(course.courseId)">
+               @click="goFreeCourseLearn(course.courseId)">
             <el-image :src="course.cover"></el-image>
             <div class="hot-course-content">
               <h3>{{course.courseName}}</h3>
@@ -85,9 +85,9 @@
                   <span v-if="course.courseLevel == 2">中级</span>
                   <span v-if="course.courseLevel == 3">高级</span>
                   <span>
-                    <i class="el-icon-s-custom">{{course.numberOfStudents}}</i>
+                    <i class="el-icon-user-solid">{{course.numberOfStudents}}</i>
                   </span>
-                  <span style="float: right;">{{course.peoples}}人评价</span>
+                  <span style="float: right;">{{course.evaluates}}人评价</span>
                 </div>
               </div>
             </div>
@@ -106,6 +106,7 @@
     name: 'Home',
     data: function () {
       return {
+        directionId: '707f78577890b01ae3b48847b602f9b0',
         carouselList: [],
         directionList: [],
         newCourseList: [],
@@ -129,7 +130,8 @@
           return this.$message.error(res.meta.msg)
         }
         this.directionList = res.data.directionList
-        this.findCourseByDirection(this.directionList[0].directionId)
+        this.directionId = this.directionList[0].directionId
+        this.findCourseByDirection(this.directionId)
       },
       // 课程方向被选中
       directionClick: function (tab, event) {
@@ -137,12 +139,18 @@
       },
       // 根据课程方向查询课程
       findCourseByDirection: async function (directionId) {
-        let num = 6
-        const { data: res } = await this.$http.get(`CourseController/findCourseByDirection/${directionId}/${num}`)
+        let params = {
+          num: 6,
+          isfree: 0,
+          directionId: directionId,
+          news: false,
+          numberOfStudents: false
+        }
+        const { data: res } = await this.$http.post('CourseController/findCourseByCondition', params)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        this.courseByDirectionList = res.data.courseByDirectionList
+        this.courseByDirectionList = res.data.courseList
       },
       // 热门课程被选中
       hotClick: function (tab, event) {
@@ -150,25 +158,47 @@
       },
       // 查询热门课程
       findHotCourse: async function (isfree) {
-        let num = 8
-        const { data: res } = await this.$http.get(`CourseController/findHotCourse/${isfree}/${num}`)
+        let params = {
+          num: 8,
+          isfree: isfree,
+          directionId: null,
+          news: false,
+          numberOfStudents: true
+        }
+        const { data: res } = await this.$http.post('CourseController/findCourseByCondition', params)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        this.hotCourseList = res.data.hotCourseList
+        this.hotCourseList = res.data.courseList
       },
       // 查看新上好课
       findNewCourse: async function () {
-        let num = 8
-        const { data: res } = await this.$http.get(`CourseController/findNewCourse/${num}`)
+        let params = {
+          num: 8,
+          isfree: 1,
+          directionId: null,
+          numberOfStudents: true,
+          news: true
+        }
+        const { data: res } = await this.$http.post('CourseController/findCourseByCondition', params)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        this.newCourseList = res.data.newCourseList
+        this.newCourseList = res.data.courseList
       },
-      // 课程被选中 跳转页面
-      courseCheck: function (courseId) {
-        console.log(courseId)
+      // 实战课程被选中，跳转页面
+      goPracticeCourse: function (courseId) {
+        this.$router.push({
+          name: 'PracticeCourseBuy',
+          query: { courseId: courseId }
+        })
+      },
+      // 免费课程被选中 跳转页面
+      goFreeCourseLearn: function (courseId) {
+        this.$router.push({
+          name: 'FreeCourseLearn',
+          query: { courseId: courseId }
+        })
       }
     },
     created: function () {
@@ -295,7 +325,7 @@
 
         .new-course-price {
           font-size: 12px;
-          color: #545C63;
+          color: #f01414;
         }
       }
     }
@@ -348,12 +378,12 @@
             margin-right: 12px;
           }
         }
-
-        .hot-course-price {
-          font-size: 12px;
-          color: #545C63;
-        }
       }
     }
+  }
+
+  .course-price {
+    font-size: 12px;
+    color: #f01414;
   }
 </style>

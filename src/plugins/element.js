@@ -8,6 +8,7 @@ import {
   CarouselItem,
   Checkbox,
   Col,
+  Container,
   Dialog,
   Divider,
   Dropdown,
@@ -20,15 +21,17 @@ import {
   Image,
   Input,
   Main,
+  Menu,
+  MenuItem,
   Message,
   MessageBox,
+  Pagination,
   Row,
   Table,
   TableColumn,
   TabPane,
   Tabs,
-  Tag,
-  Pagination, Menu, MenuItem
+  Tag
 } from 'element-ui'
 
 Vue.prototype.$message = Message
@@ -63,3 +66,4 @@ Vue.use(Divider)
 Vue.use(Pagination)
 Vue.use(Menu)
 Vue.use(MenuItem)
+Vue.use(Container)

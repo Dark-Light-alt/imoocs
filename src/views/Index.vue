@@ -5,16 +5,16 @@
         <div class="header-left">
           <ul class="nav-item">
             <li>
-              <router-link to="/">慕课网首页</router-link>
+              <router-link :to="{name: 'Home'}">慕课网首页</router-link>
             </li>
             <li>
-              <router-link to="/freeCourse">免费课程</router-link>
+              <router-link :to="{name: 'FreeCourse'}">免费课程</router-link>
             </li>
             <li>
-              <router-link to="/practiceCourse">实战课程</router-link>
+              <router-link :to="{name: 'PracticeCourse'}">实战课程</router-link>
             </li>
             <li>
-              <router-link to="/monograph">专栏</router-link>
+              <router-link :to="{name: 'Monograph'}">专栏</router-link>
             </li>
           </ul>
         </div>
@@ -29,13 +29,13 @@
           </ul>
           <ul class="nav-item" v-if="null !== customer">
             <li>
-              <router-link class="el-icon-shopping-cart-2" to="/shoppingCart"></router-link>
+              <router-link class="el-icon-shopping-cart-2" :to="{name: 'ShoppingCart'}"></router-link>
             </li>
             <li>
               <router-link class="el-icon-bell" to="inform"></router-link>
             </li>
             <li>
-              <router-link class="mycourse" to="/mycourses">我的课程</router-link>
+              <router-link class="mycourse" :to="{name: 'MyCourses'}">我的课程</router-link>
             </li>
             <li>
               <el-dropdown @command="handleCommand">
@@ -44,7 +44,7 @@
               </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-s-management" command="MyCourses">我的课程</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-s-order" command="MyCourses">订单中心</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-s-order" command="OrderCenter">订单中心</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-s-tools" command="MyCourses">个人设置</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-switch-button" @click.native="logout" divided>安全退出</el-dropdown-item>
                 </el-dropdown-menu>
@@ -59,7 +59,7 @@
       <el-footer height="100px">
         <ul>
           <li>
-            <router-link to="/">网站首页</router-link>
+            <router-link :to="{name: 'Home'}">网站首页</router-link>
           </li>
           <li>
             <a>联系我们</a>
@@ -114,7 +114,7 @@
         sessionStorage.setItem('customer', JSON.stringify(res.data.customer))
       },
       handleCommand: function (command) {
-        this.$router.push({name: command})
+        this.$router.push({ name: command })
       },
       refresh: function () {
         this.$router.push({
