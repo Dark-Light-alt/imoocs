@@ -28,6 +28,7 @@ import {
   TabPane,
   Tabs,
   Tag,
+  Tooltip,
   Pagination, Menu, MenuItem
 } from 'element-ui'
 
@@ -63,3 +64,5 @@ Vue.use(Divider)
 Vue.use(Pagination)
 Vue.use(Menu)
 Vue.use(MenuItem)
+Vue.use(Tooltip)
+
