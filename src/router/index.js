@@ -95,6 +95,37 @@ const routes = [
             component: () => import('../components/MyMonograph')
           }
         ]
+        path: '/monographDetials',
+        name: 'MonographDetials',
+        component: () => import('../components/MonographDetials'),
+      },
+      {
+        path: '/myCourses',
+        name: 'MyCourses',
+        component: () => import('../components/MyCourses'),
+        children: [
+          {
+            path: '/myMonograph',
+            name: 'MyMonograph',
+            component:()=>import('../components/MyMonograph')
+          },
+        ]
+      },{
+        path: '/principalSheet',
+        name: 'PrincipalSheet',
+        component:()=>import('../components/Personalsetting/PrincipalSheet'),
+        children: [
+          {
+            path: '/personalCenter',
+            name: 'PersonalCenter',
+            component:()=>import('../components/Personalsetting/PersonalCenter')
+          },
+          {
+            path: '/accountbinding',
+            name: 'Accountbinding',
+            component:()=>import('../components/Personalsetting/Accountbinding')
+          }
+        ]
       }
     ]
   },
@@ -102,6 +133,11 @@ const routes = [
     path: '/refresh',
     name: 'Refresh',
     component: () => import('../views/Refresh')
+  },
+  {
+    path: '/article',
+    name: 'Article',
+    component: () => import('../components/Article')
   }
 ]
 

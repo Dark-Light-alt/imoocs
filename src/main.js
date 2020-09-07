@@ -4,8 +4,15 @@ import router from './router'
 import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
-
 import http from './assets/js/http'
+
+import VueMarkdownEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
+
+VueMarkdownEditor.use(vuepressTheme);
+
+Vue.use(VueMarkdownEditor);
 
 Vue.prototype.$http = http
 
@@ -30,6 +37,8 @@ Vue.prototype.download = function (res) {
 }
 
 Vue.config.productionTip = false
+
+
 
 new Vue({
   router,
