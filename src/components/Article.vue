@@ -16,9 +16,8 @@
                   <div class="article" @click="findArticle(article.articleId)">
                     <div v-if="article.articleId!=null">
                       0{{x+1}}&nbsp;{{article.articleName}}
-                      <span v-if="article.tryReading==1" style="float: right;font-size: 13px;color: rgb(51,119,255);font-weight: bold;margin-right: 15px">试读</span>
+                      <span v-if="article.tryReading==1 && hasMonograph==0" style="float: right;font-size: 13px;color: rgb(51,119,255);font-weight: bold;margin-right: 15px">试读</span>
                       <span style="float: right;margin-right: 15px">
-                        <i class="el-icon-unlock" v-if="article.tryReading==0 && hasMonograph==1"></i>
                         <i class="el-icon-lock" v-if="article.tryReading==0 && hasMonograph==0"></i>
                       </span>
                     </div>

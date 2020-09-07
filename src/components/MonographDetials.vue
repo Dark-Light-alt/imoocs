@@ -80,9 +80,8 @@
                   <div @click="isSub(article)" v-if="article.articleId!=null">
                     <span>0{{index+1}}&nbsp;{{article.articleName}}</span>
                     <el-button round style="float: right;color: rgb(51,119,255);font-weight: bold"
-                    v-if="article.tryReading==1">试读</el-button>
+                    v-if="article.tryReading==1 && hasMonograph==0">试读</el-button>
                     <span style="float: right;margin-right: 25px">
-                      <i class="el-icon-unlock" v-if="article.tryReading==0 && hasMonograph==1"></i>
                       <i class="el-icon-lock" v-if="article.tryReading==0 && hasMonograph==0"></i>
                     </span>
                     <div style="color: rgb(145,153,170);padding-top: 5px;font-size: 13px;">{{article.createTime}}</div>
