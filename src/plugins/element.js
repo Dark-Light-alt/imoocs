@@ -10,6 +10,7 @@ import {
   Checkbox,
   CheckboxGroup,
   Col,
+  Container,
   Dialog,
   Divider,
   Drawer,
@@ -23,23 +24,24 @@ import {
   Image,
   Input,
   Main,
+  Menu,
+  MenuItem,
   Message,
   MessageBox,
+  Option,
   PageHeader,
   Pagination,
+  Radio,
+  RadioGroup,
   Rate,
   Row,
+  Select,
   Table,
   TableColumn,
   TabPane,
   Tabs,
   Tag,
-  Tooltip,
-  Select,
-  Option,
-  Radio,
-  RadioGroup,
-  Pagination, Menu, MenuItem
+  Tooltip
 } from 'element-ui'
 
 Vue.prototype.$message = Message
