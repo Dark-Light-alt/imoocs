@@ -1,9 +1,9 @@
 <template>
   <div class="main">
     <div style="margin: 20px">
-      <div style="padding-bottom: 15px">
+      <div style="padding-bottom: 20px">
         <span style="font-size: 19px;font-weight: bold">个人信息</span>
-        <el-button style="float: right" icon="el-icon-edit" title="修改" @click="updateDialogVisible = true" circle></el-button>
+        <el-button style="float: right" icon="el-icon-edit" title="修改" @click="updateDialogVisible = true" round>编辑</el-button>
       </div>
       <el-form :v-model="customerInfo">
       <el-form-item label="昵称：">
@@ -54,14 +54,12 @@
         <el-form-item label="地址" prop="customerAddress">
           <el-input v-model="customerInfo.customerAddress"></el-input>
         </el-form-item>
-
-        <!--<el-form-item label="性别" prop="customerSex">
+        <el-form-item label="性别" prop="customerSex">
           <el-radio-group v-model="customerInfo.customerSex">
             <el-radio :label="0">男</el-radio>
             <el-radio :label="1">女</el-radio>
           </el-radio-group>
-        </el-form-item>-->
-
+        </el-form-item>
         <el-form-item label="个人简介" prop="personalAbout">
           <el-input v-model="customerInfo.personalAbout"></el-input>
         </el-form-item>
