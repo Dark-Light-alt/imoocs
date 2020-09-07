@@ -21,7 +21,7 @@
             <h3 @click="monographDetials(item)">{{item.monographName}}</h3>
             <h5>{{item.highlights}}</h5>
             <div v-for="(chapter,index) in item.chapterList" :key="index">
-              <span class="article" v-for="article in chapter.articleList" :key="article.articleId" @click="readArticle(article.articleId)">
+              <span class="article" v-for="article in chapter.articleList" :key="article.articleId" @click="readArticle(article.articleId,item)">
                 <el-tag v-if="article.tryReading==1" type="primary" size="mini">试读</el-tag>
                 <span>{{article.articleName}}</span>
               </span>
@@ -34,6 +34,7 @@
           </div>
         </div>
       </el-card>
+
     </div>
   </div>
 </template>
@@ -53,15 +54,16 @@
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        console.log(res.data.monographList);
         this.monographList = res.data.monographList;
-      },readArticle:function(articleId){
+      },readArticle:function(articleId,item){
+        //把当前专刊存进sessionStory
+        sessionStorage.setItem("monograph",JSON.stringify(item));
         //跳转到文章页面
         this.$router.push({name:"Article",query:{articleId:articleId}});
-      },monographDetials(monograph){
-        console.log(monograph);
+      },monographDetials(item){
+        sessionStorage.setItem("monograph",JSON.stringify(item));
         //跳转到专刊详情页面
-        this.$router.push({name:"MonographDetials",query:{monograph:monograph}});
+        this.$router.push({name:"MonographDetials"});
       }
     },created:function(){
       this.findMonographList();

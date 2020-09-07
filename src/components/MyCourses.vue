@@ -27,7 +27,7 @@
             <i class="el-icon-menu"></i>
             <span slot="title">笔记</span>
           </el-menu-item>
-          <el-menu-item index="1-3" route="Test">
+          <el-menu-item index="1-3" route="MyMonograph">
             <i class="el-icon-menu"></i>
             <span slot="title">专栏</span>
           </el-menu-item>

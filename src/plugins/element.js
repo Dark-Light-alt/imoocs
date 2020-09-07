@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {
+  Aside,
   Avatar,
   Badge,
   Button,
@@ -8,6 +9,7 @@ import {
   CarouselItem,
   Checkbox,
   Col,
+  Container,
   Dialog,
   Divider,
   Dropdown,
@@ -35,6 +37,7 @@ import {
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 
+Vue.use(Aside)
 Vue.use(Header)
 Vue.use(Main)
 Vue.use(Footer)
@@ -65,4 +68,5 @@ Vue.use(Pagination)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Tooltip)
+Vue.use(Container)
 

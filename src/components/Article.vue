@@ -2,11 +2,11 @@
   <div>
     <el-container>
       <el-header>
-          <span class="monographName">{{monographList[0].monographName}}</span>/
-        {{article.articleName}}
+          <span class="monographName" @click="showMonographDetials()">{{monograph.monographName}}</span>/
+        <span>{{article.articleName}}</span>
       </el-header>
       <el-container>
-        <el-aside width="200px" class="el-aside">
+        <el-aside width="325px" class="el-aside">
           <div style="margin-left: 15px;overflow:auto;height:1100px">
             <div style="font-size:20px;margin: 10px 0 10px 0;font-family: 微软雅黑">目录</div>
             <div v-for="(monograph,i) in monographList" :key="i">
@@ -16,7 +16,11 @@
                   <div class="article" @click="findArticle(article.articleId)">
                     <div v-if="article.articleId!=null">
                       0{{x+1}}&nbsp;{{article.articleName}}
-                      <span v-if="article.tryReading==1" style="float: right;font-size: 13px;color: rgb(51,119,255);font-weight: bold;">试读</span>
+                      <span v-if="article.tryReading==1" style="float: right;font-size: 13px;color: rgb(51,119,255);font-weight: bold;margin-right: 15px">试读</span>
+                      <span style="float: right;margin-right: 15px">
+                        <i class="el-icon-unlock" v-if="article.tryReading==0 && hasMonograph==1"></i>
+                        <i class="el-icon-lock" v-if="article.tryReading==0 && hasMonograph==0"></i>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -30,17 +34,18 @@
               <div class="img">
                 <el-image
                   style="width: 100px; height: 130px"
-                  :src="monographList[0].cover"
-                  :fit="fit"></el-image>
+                  :src="monograph.cover"></el-image>
               </div>
               <div style="float: left;margin-left: 15px;text-align: left;height: 110px">
-                <span style="font-size: 20px;font-weight: bold">{{monographList[0].monographName}}</span>
+                <span style="font-size: 20px;font-weight: bold">{{monograph.monographName}}</span>
                 <div class="hightlights">
-                  {{monographList[0].highlights}}
+                  {{monograph.highlights}}
                 </div>
                 <div class="price">
-                  ￥ {{monographList[0].price}}
-                  <div style="float: right;"><el-button type="primary" round>立即订阅</el-button></div>
+                  ￥ {{monograph.price}}
+                  <div style="float: right;" v-if="hasMonograph==0">
+                    <el-button type="primary" round @click="subscribeNow()">立即订阅</el-button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -50,32 +55,93 @@
         </el-main>
       </el-container>
     </el-container>
+
+    <el-dialog :visible.sync="showDialogVisible" width="20%" height="350px" center>
+      <div style="text-align: center">
+        <el-image :src="monograph.cover" style="height: 180px;width: 150px"></el-image>
+      </div>
+      <h3>{{monograph.monographName}}</h3>
+      <div style="font-size: 22px;color: rgb(64,158,255);padding: 5px 0 5px 0;font-weight: bold;text-align: center">价格:￥ {{monograph.price}}</div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="subscribeNow()">立即订阅</el-button>
+        <el-button @click="showDialogVisible = false">暂不订阅</el-button>
+      </span>
+    </el-dialog>
+
+    <LoginAndRegister :isShow="isShow" name="login"
+                      @dialog-cancel="isShow = false"></LoginAndRegister>
   </div>
 </template>
 
 <script>
+  import LoginAndRegister from '@/components/LoginAndRegister'
+
     export default {
       name: "Article",
       data: function () {
         return {
           fileContent: '',
           article: {},
-          monographList:[]
+          monographList:[],
+          hasMonograph:null,
+          showDialogVisible:false,
+          monograph:{},
+          isShow:false
         }
       },
       methods:{
-          findArticle: async function(articleId){
-            //读取文章
-            const {data: res} = await this.$http.get(`ArticleController/readFile/${articleId}`)
+        isBuyMonograph:async function(){
+          //判断用户是否购买了专刊
+          //获取用户
+          let customer = JSON.parse(sessionStorage.getItem("customer"));
+          //登陆了
+          if(null!==customer && null!=this.monograph){
+            const {data: res}=await this.$http.post("MyMonographController/isBuyMonograph",{
+              customerId: customer.customerId,
+              monographId:this.monograph.monographId
+            });
+
             if(!res.meta.access){
-              this.$message.error(res.meta.msg)
+              this.$message.error(res.meta.msg);
             }
-            //文章内容
-           this.fileContent = res.data.fileContent;
-            //文章对象
-            this.article = res.data.article;
-            this.findChapter(articleId);
-          },
+            this.hasMonograph = res.data.hasMonograph;
+          }else
+          {
+            //没登陆
+            this.hasMonograph=0;
+          }
+        },
+        findArticle: async function(articleId){
+          //根据文章id查询文章对象
+          const {data:res} = await this.$http.get(`ArticleController/findById/${articleId}`);
+          if(!res.meta.access){
+            this.$message.error(res.meta.msg);
+          }
+          //文章对象
+          this.article = res.data.articleInfo;
+
+          //当前用户购买了付费文章
+          if(this.article.tryReading == 0 && this.hasMonograph == 1){
+            this.readArticle(articleId);
+          }else if(this.article.tryReading == 0 && this.hasMonograph == 0)
+          {
+            //没有购买付费文章 弹窗是否订阅
+            this.showDialogVisible=true;
+          }
+          //试读文章直接读取
+          if(this.article.tryReading == 1){
+            this.readArticle(articleId);
+          }
+        },
+        readArticle:async function(articleId){
+          //读取文章
+          const {data: res} = await this.$http.get(`ArticleController/readFile/${articleId}`)
+          if(!res.meta.access){
+            this.$message.error(res.meta.msg)
+          }
+          //文章内容
+          this.fileContent = res.data.fileContent;
+        },
         findChapter: async function(articleId){
           //根据文章id查询目录
           const {data: res} = await this.$http.get(`MonographController/listAllArticle/${articleId}`)
@@ -83,11 +149,38 @@
             this.$message.error(res.meta.msg)
           }
           this.monographList = res.data.monographList;
+        },
+        showMonographDetials: async function() {
+          console.log(this.monograph);
+          sessionStorage.setItem("monograph",JSON.stringify(this.monograph));
+          //跳转到专刊详情页面
+          this.$router.push({name:"MonographDetials"});
+        },subscribeNow: function(){
+          //判断用户是否登陆
+          let customer = JSON.parse(sessionStorage.getItem("customer"));
+          if(null==customer){
+            //没登陆先登陆
+            this.isShow = true
+          }else
+          {
+            //登陆了跳转到订单中心
+            this.$router.push({name:"OrderCenter",query:{monograph:this.monograph}});
+          }
         }
       },
       created:function(){
+        //获取参数
         let articleId = this.$route.query.articleId;
+        this.monograph = JSON.parse(sessionStorage.getItem("monograph"));
+        //用户是否购买了专刊
+        this.isBuyMonograph();
+        //查询文章
         this.findArticle(articleId);
+        //查询章节目录
+        this.findChapter(articleId);
+      },
+      components: {
+          LoginAndRegister
       }
     }
 </script>
@@ -128,6 +221,10 @@
 
   .monographName{
     font-size: 20px;
+  }
+
+  .monographName:hover{
+    color: rgb(51, 119, 255);
   }
 
   .chapter{
