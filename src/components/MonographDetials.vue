@@ -43,30 +43,6 @@
                 <span style="font-weight: bold">第{{index+1}}章</span>{{chapter.chapterAbout}}
               </div>
             </div>
-            <div class="mo">
-              <h3>适合人群</h3>
-              <div style="margin-left: 40px"><ul style="list-style-type: disc">
-                <li>有一定 React 基础，想要进一步学习 React 编程的在校生</li>
-                <li>工作 1-5 年，接触过 React，想要深入了解内部原理的同学</li>
-                <li>对技术有追求，想要在面试中提高自己竞争力的同学</li>
-                <li>对 React 底层源码感兴趣的爱好者</li>
-              </ul>
-              </div>
-            </div>
-            <div class="mo">
-              <h3>购买须知</h3>
-              <div>
-                <div><ol>
-                  <li>本专栏为图文形式内容服务，共计 30 小节，上线时间为 2020 年 8 月 11 日 ，大概 2020 年 9 月底完成更新</li>
-                  <li>本专栏上线即更新完成，形式为图文；</li>
-                  <li>订阅成功后，用户即可通过慕课网 PC 端、App 端、WAP 端享有永久阅读的权限；</li>
-                  <li>慕课专栏为虚拟内容服务，订阅成功后概不退款；</li>
-                  <li>在专栏阅读过程中，如有任何问题，请邮件联系kf@imooc.com；</li>
-                  <li>慕课专栏版权归本平台所有，任何机构、媒体、网站或个人未经本网协议授权不得转载、链接、转贴或以其他方式复制发布/发表，违者将依法追究责任。</li>
-                </ol>
-                </div>
-              </div>
-            </div>
           </el-card>
 
         </el-tab-pane>
