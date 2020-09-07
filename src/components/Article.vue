@@ -48,14 +48,13 @@
                 </div>
               </div>
             </div>
-
             <v-md-editor :value="fileContent" mode="preview"></v-md-editor>
           </el-card>
         </el-main>
       </el-container>
     </el-container>
 
-    <el-dialog :visible.sync="showDialogVisible" width="20%" height="350px" center>
+    <el-dialog :visible.sync="showDialogVisible" width="20%" center>
       <div style="text-align: center">
         <el-image :src="monograph.cover" style="height: 180px;width: 150px"></el-image>
       </div>
