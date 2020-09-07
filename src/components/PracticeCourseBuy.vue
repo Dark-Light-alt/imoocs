@@ -2,6 +2,7 @@
   <div class="practiceCourseBuy">
     <div class="course-infos-top">
       <div class="info">
+        <i class="el-icon-star-off favorite" @click="favorite">加入收藏</i>
         <div title="title-box">
           <h1>{{course.courseName}}</h1>
         </div>
@@ -30,7 +31,7 @@
       </el-card>
     </div>
     <div class="main">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName">
         <el-tab-pane label="课程介绍" name="课程介绍">
           <el-card class="content">
             <div class="course-about">
@@ -49,16 +50,23 @@
             <h4>{{chapter.chapterName}}</h4>
             <div class="chapter-description">{{chapter.chapterName}}</div>
             <ul class="video">
-              <li v-for="video in chapter.videoList" :key="video.videoId">
-                <i class="el-icon-video-play"></i>
-                {{video.videoName}}
-                <el-button v-if="video.tryAndSee === 0">试看</el-button>
-              </li>
+              <a v-for="video in chapter.videoList" :key="video.videoId">
+                <li v-if="video.videoIsenable == 0">
+                  <i class="el-icon-video-play"></i>
+                  {{video.videoName}}
+                  <el-button v-if="video.tryAndSee === 0" @click="tryAndSee(video.videoUrl,video.videoName)">试看
+                  </el-button>
+                </li>
+              </a>
             </ul>
           </el-card>
         </el-tab-pane>
       </el-tabs>
     </div>
+    <el-dialog title="课程试看" :visible.sync="tryAndSeeVisible" width="65%">
+      <h3 style="margin-top: 0px;margin-bottom: 35px">{{videoName}}</h3>
+      <video :src="videoUrl" controls="controls"></video>
+    </el-dialog>
   </div>
 </template>
 
@@ -69,11 +77,14 @@
       return {
         activeName: '课程介绍',
         courseId: this.$route.query.courseId,
-        course: {}
+        course: {},
+        videoName: null,
+        videoUrl: null,
+        tryAndSeeVisible: false
       }
     },
     methods: {
-      buy: function () {
+      buy: async function () {
         this.$router.push({
           name: 'ConfirmOrder',
           query: { courseId: this.courseId }
@@ -90,12 +101,29 @@
         }
         this.$message.success(res.meta.msg)
       },
+      tryAndSee: function (videoUrl, videoName) {
+        this.videoUrl = videoUrl
+        this.videoName = videoName
+        this.tryAndSeeVisible = true
+      },
       findCourse: async function () {
         const { data: res } = await this.$http.get(`CourseController/previewCourse/${this.courseId}`)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
         this.course = res.data.course
+      },
+      favorite: async function () {
+        let params = {
+          courseId: this.courseId,
+          customerId: JSON.parse(sessionStorage.getItem('customer')).customerId
+        }
+
+        const { data: res } = await this.$http.put('FavoritesController/append', params)
+        if (!res.meta.access) {
+          return this.$message.error(res.meta.msg)
+        }
+        this.$message.success(res.meta.msg)
       },
       showTotalTime (chapterList) {
         let totalSec = 0
@@ -124,9 +152,6 @@
         let totalHour = Math.floor(totalMin / 60)
         let min = Math.floor(totalMin % 60)
         return totalHour + '小时' + min + '分'
-      },
-      handleClick: function (tab, event) {
-
       }
     },
     created: function () {
@@ -150,6 +175,15 @@
       padding-top: 72px;
       padding-bottom: 136px;
       position: relative;
+
+      .favorite {
+        float: right;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .favorite:hover {
+        color: white;
+      }
 
       h1 {
         text-align: center;
@@ -306,5 +340,11 @@
         }
       }
     }
+  }
+
+  video {
+    width: 100%;
+    height: 450px;
+    background-color: #07111b;
   }
 </style>

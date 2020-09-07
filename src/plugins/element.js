@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {
+  Aside,
   Avatar,
   Badge,
   Button,
@@ -7,9 +8,12 @@ import {
   Carousel,
   CarouselItem,
   Checkbox,
+  CheckboxGroup,
   Col,
+  Container,
   Dialog,
   Divider,
+  Drawer,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -20,26 +24,31 @@ import {
   Image,
   Input,
   Main,
+  Menu,
+  MenuItem,
   Message,
   MessageBox,
+  Option,
+  PageHeader,
+  Pagination,
+  Radio,
+  RadioGroup,
+  Rate,
   Row,
+  Select,
   Table,
   TableColumn,
   TabPane,
   Tabs,
   Tag,
-  Tooltip,
-  Select,
-  Option,
-  Radio,
-  RadioGroup,
-  Pagination, Menu, MenuItem
+  Tooltip
 } from 'element-ui'
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 
 Vue.use(Header)
+Vue.use(Aside)
 Vue.use(Main)
 Vue.use(Footer)
 Vue.use(Carousel)
@@ -73,4 +82,9 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(Radio)
 Vue.use(RadioGroup)
-
+Vue.use(Container)
+Vue.use(Rate)
+Vue.use(PageHeader)
+Vue.use(Drawer)
+Vue.use(CheckboxGroup)
+Vue.use(Checkbox)

@@ -35,6 +35,16 @@ const routes = [
         component: () => import('../components/FreeCourseLearn')
       },
       {
+        path: '/courseLearn',
+        name: 'CourseLearn',
+        component: () => import('../components/CourseLearn')
+      },
+      {
+        path: '/answer',
+        name: 'Answer',
+        component: () => import('../components/Answer')
+      },
+      {
         path: '/practiceCourse',
         name: 'PracticeCourse',
         component: () => import('../components/PracticeCourse')
@@ -50,6 +60,11 @@ const routes = [
         component: () => import('../components/ConfirmOrder')
       },
       {
+        path: '/pay',
+        name: 'Pay',
+        component: () => import('../components/Pay')
+      },
+      {
         path: '/monograph',
         name: 'Monograph',
         component: () => import('../components/Monograph')
@@ -60,18 +75,33 @@ const routes = [
         component: () => import('../components/ShoppingCart')
       },
       {
+        path: '/myLearn',
+        name: 'MyLearn',
+        component: () => import('../components/MyLearn'),
+        children: [
+          {
+            path: '/myCourse',
+            name: 'MyCourse',
+            component: () => import('../components/MyCourse')
+          },
+          {
+            path: '/myFavorite',
+            name: 'MyFavorite',
+            component: () => import('../components/MyFavorite')
+          },
+          {
+            path: '/myMonograph',
+            name: 'MyMonograph',
+            component: () => import('../components/MyMonograph')
+          }
+        ]
+      },
+      {
         path: '/monographDetials',
         name: 'MonographDetials',
         component: () => import('../components/MonographDetials'),
       },
       {
-        path: '/myCourses',
-        name: 'MyCourses',
-        component: () => import('../components/MyCourses'),
-        children: [
-          {
-            path: '/myMonograph',
-            name: 'MyMonograph',
             component:()=>import('../components/MyMonograph')
           },
           {
@@ -83,17 +113,17 @@ const routes = [
       },{
         path: '/principalSheet',
         name: 'PrincipalSheet',
-        component:()=>import('../components/Personalsetting/PrincipalSheet'),
+        component: () => import('../components/Personalsetting/PrincipalSheet'),
         children: [
           {
             path: '/personalCenter',
             name: 'PersonalCenter',
-            component:()=>import('../components/Personalsetting/PersonalCenter')
+            component: () => import('../components/Personalsetting/PersonalCenter')
           },
           {
             path: '/accountbinding',
             name: 'Accountbinding',
-            component:()=>import('../components/Personalsetting/Accountbinding')
+            component: () => import('../components/Personalsetting/Accountbinding')
           }
         ]
       }

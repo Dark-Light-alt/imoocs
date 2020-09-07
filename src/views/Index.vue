@@ -35,7 +35,7 @@
               <router-link class="el-icon-bell" to="inform"></router-link>
             </li>
             <li>
-              <router-link class="mycourse" :to="{name: 'MyCourses'}">我的课程</router-link>
+              <router-link class="mycourse" :to="{name: 'MyCourse'}">我的课程</router-link>
             </li>
             <li>
               <el-dropdown @command="handleCommand">
@@ -43,9 +43,9 @@
                 <el-avatar :src="customer.customerPhoto"></el-avatar>
               </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-s-management" command="MyCourses">我的课程</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-s-management" command="MyCourse">我的课程</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-s-order" command="OrderCenter">订单中心</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-s-tools" command="MyCourses">个人设置</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-s-tools" command="MyLearn">个人设置</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-switch-button" @click.native="logout" divided>安全退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -106,6 +106,9 @@
         this.refresh()
       },
       autoLogin: async function () {
+        if (sessionStorage.getItem('customer') != null) {
+          return this.customer = JSON.parse(sessionStorage.getItem('customer'))
+        }
         const { data: res } = await this.$http.get('CustomerController/autoLogin')
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
