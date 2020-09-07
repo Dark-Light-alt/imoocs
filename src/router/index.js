@@ -68,18 +68,7 @@ const routes = [
         path: '/myCourses',
         name: 'MyCourses',
         component: () => import('../components/MyCourses'),
-        children: [
-          {
-            path: '/test',
-            name: 'Test',
-            component: () => import('../components/Test')
-          },
-          {
-            path: '/myMonograph',
-            name: 'MyMonograph',
-            component: () => import('../components/MyMonograph')
-          }
-        ]
+        children: []
       }
     ]
   },
