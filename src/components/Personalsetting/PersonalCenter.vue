@@ -1,7 +1,11 @@
 <template>
-  <div class="PersonalCenter">
-    <el-button icon="el-icon-edit" title="修改" @click="updateDialogVisible = true" circle></el-button>
-    <el-form label-position="right" :v-model="customerInfo">
+  <div class="main">
+    <div style="margin: 20px">
+      <div style="padding-bottom: 15px">
+        <span style="font-size: 19px;font-weight: bold">个人信息</span>
+        <el-button style="float: right" icon="el-icon-edit" title="修改" @click="updateDialogVisible = true" circle></el-button>
+      </div>
+      <el-form :v-model="customerInfo">
       <el-form-item label="昵称：">
         <span>{{ customerInfo.customerNickname }}</span>
       </el-form-item>
@@ -17,6 +21,12 @@
       <el-form-item label="性别：">
         <span>{{ customerInfo.customerSex === 0 ? '男' : '女' }}</span>
       </el-form-item>
+        <el-form-item label="个人简介：" prop="personalAbout">
+          <span>{{ customerInfo.personalAbout}}</span>
+        </el-form-item>
+        <el-form-item label="职位：" prop="customerInfo.customerPosition.positionName">
+          <span>{{ customerInfo.customerPosition.positionName}}</span>
+        </el-form-item>
     </el-form>
 
     <el-dialog title="编辑个人信息" :visible.sync="updateDialogVisible" width="50%" @open="findById">
@@ -61,6 +71,7 @@
           <el-button @click="update()">确定</el-button>
       </span>
     </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -69,19 +80,21 @@
         name: "PersonalCenter",
       data() {
         return {
-          customerInfo: {},
-          positionListInfo:[],
-          updateDialogVisible: false,
-          updateCustomerInfo: {
-            customerId:null,
-            customerNickname: null,
-            customerEmail: null,
-            customerPhone: null,
-            positionId:null,
-            customerAddress: null,
+          customerInfo: {
+            customerId:'',
+            customerNickname: '',
+            customerEmail: '',
+            customerPhone: '',
+            positionId:'',
+            customerAddress: '',
             customerSex: null,
-            personalAbout:null
-          }
+            personalAbout:'',
+            customerPosition:{
+              positionName:''
+            }
+          },
+          positionListInfo:[],
+          updateDialogVisible: false
         }
       },
       created: function () {
@@ -124,5 +137,10 @@
 </script>
 
 <style scoped>
-
+  .main{
+    width: 100%;
+    overflow-y: auto;
+    height: 500px;
+    background-color: rgb(255,255,255);
+  }
 </style>
