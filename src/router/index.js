@@ -35,6 +35,16 @@ const routes = [
         component: () => import('../components/FreeCourseLearn')
       },
       {
+        path: '/courseLearn',
+        name: 'CourseLearn',
+        component: () => import('../components/CourseLearn')
+      },
+      {
+        path: '/answer',
+        name: 'Answer',
+        component: () => import('../components/Answer')
+      },
+      {
         path: '/practiceCourse',
         name: 'PracticeCourse',
         component: () => import('../components/PracticeCourse')
@@ -50,6 +60,11 @@ const routes = [
         component: () => import('../components/ConfirmOrder')
       },
       {
+        path: '/pay',
+        name: 'Pay',
+        component: () => import('../components/Pay')
+      },
+      {
         path: '/monograph',
         name: 'Monograph',
         component: () => import('../components/Monograph')
@@ -60,10 +75,26 @@ const routes = [
         component: () => import('../components/ShoppingCart')
       },
       {
-        path: '/myCourses',
-        name: 'MyCourses',
-        component: () => import('../components/MyCourses'),
-        children: []
+        path: '/myLearn',
+        name: 'MyLearn',
+        component: () => import('../components/MyLearn'),
+        children: [
+          {
+            path: '/myCourse',
+            name: 'MyCourse',
+            component: () => import('../components/MyCourse')
+          },
+          {
+            path: '/myFavorite',
+            name: 'MyFavorite',
+            component: () => import('../components/MyFavorite')
+          },
+          {
+            path: '/myMonograph',
+            name: 'MyMonograph',
+            component: () => import('../components/MyMonograph')
+          }
+        ]
       }
     ]
   },

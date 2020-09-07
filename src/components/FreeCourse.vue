@@ -57,7 +57,7 @@
                   <span v-if="item.courseLevel == 2">中级</span>
                   <span v-if="item.courseLevel == 3">高级</span>
                   <span>
-                    <i class="el-icon-user-solid"></i>
+                    <i class="el-icon-user-solid"> {{item.numberOfStudents}}</i>
                     <span>{{item.peoples}}</span>
                   </span>
                   <span class="evaluation">{{item.evaluates}}人评价</span>

@@ -1,107 +1,102 @@
 <template>
   <div class="orderCenter">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="全部" name="全部">
-        <el-card>
+    <el-tabs v-model="orderStatus" @tab-click="handleClick">
+      <el-tab-pane label="全部" name="-1">
+        <el-card v-for="order in orderList" :key="order.orderId">
           <p class="order-number">
             <i class="el-icon-cpu"></i>
             <span>订单编号：</span>
-            <span>2008191126282789</span>
-            <span class="time">2020-09-03 20:00:25</span>
-            <i class="el-icon-delete-solid delete"></i>
+            <span>{{order.orderNumber}}</span>
+            <span class="time">{{order.orderTime}}</span>
+            <i class="el-icon-delete-solid delete" @click="changeIsenable(order.orderId)"></i>
           </p>
           <div class="goods-infos">
-            <el-image :src="image"></el-image>
+            <el-image :src="order.course.cover"></el-image>
             <div class="goods-name">
-              <p>Java全栈工程师：从Java后端到全栈，高级电商全栈系统大课</p>
+              <p>{{order.course.courseName}}</p>
             </div>
             <div class="goods-price">
               <span>实付：</span>
-              <span class="price">￥ 42.00</span>
+              <span class="price">￥ {{order.orderMoney}}</span>
             </div>
-            <div class="buttons" v-if="false">
-              <el-button class="pay">立即支付</el-button>
-              <el-button>取消支付</el-button>
+            <div class="buttons" v-if="order.orderStatus == 0">
+              <el-button class="pay" @click="pay(order.orderId)">立即支付</el-button>
+              <el-button @click="changeStatus(order.orderNumber)">取消订单</el-button>
             </div>
-            <div class="order-status">已过期</div>
-          </div>
-        </el-card>
-        <el-card>
-          <p class="order-number">
-            <i class="el-icon-cpu"></i>
-            <span>订单编号：</span>
-            <span>2008191126282789</span>
-            <span class="time">2020-09-03 20:00:25</span>
-            <i class="el-icon-delete-solid delete"></i>
-          </p>
-          <div class="goods-infos">
-            <el-image :src="image"></el-image>
-            <div class="goods-name">
-              <p>Java全栈工程师：从Java后端到全栈，高级电商全栈系统大课</p>
-            </div>
-            <div class="goods-price">
-              <span>实付：</span>
-              <span class="price">￥ 42.00</span>
-            </div>
-            <div class="buttons" v-if="false">
-              <el-button class="pay">立即支付</el-button>
-              <el-button>取消支付</el-button>
-            </div>
-            <div class="order-status">已过期</div>
-          </div>
-        </el-card>
-        <el-card>
-          <p class="order-number">
-            <i class="el-icon-cpu"></i>
-            <span>订单编号：</span>
-            <span>2008191126282789</span>
-            <span class="time">2020-09-03 20:00:25</span>
-            <i class="el-icon-delete-solid delete"></i>
-          </p>
-          <div class="goods-infos">
-            <el-image :src="image"></el-image>
-            <div class="goods-name">
-              <p>Java全栈工程师：从Java后端到全栈，高级电商全栈系统大课</p>
-            </div>
-            <div class="goods-price">
-              <span>实付：</span>
-              <span class="price">￥ 42.00</span>
-            </div>
-            <div class="buttons" v-if="false">
-              <el-button class="pay">立即支付</el-button>
-              <el-button>取消支付</el-button>
-            </div>
-            <div class="order-status">已过期</div>
-          </div>
-        </el-card>
-        <el-card>
-          <p class="order-number">
-            <i class="el-icon-cpu"></i>
-            <span>订单编号：</span>
-            <span>2008191126282789</span>
-            <span class="time">2020-09-03 20:00:25</span>
-            <i class="el-icon-delete-solid delete"></i>
-          </p>
-          <div class="goods-infos">
-            <el-image :src="image"></el-image>
-            <div class="goods-name">
-              <p>Java全栈工程师：从Java后端到全栈，高级电商全栈系统大课</p>
-            </div>
-            <div class="goods-price">
-              <span>实付：</span>
-              <span class="price">￥ 42.00</span>
-            </div>
-            <div class="buttons" v-if="false">
-              <el-button class="pay">立即支付</el-button>
-              <el-button>取消支付</el-button>
-            </div>
-            <div class="order-status">已过期</div>
+            <div class="order-status" v-if="order.orderStatus == 1">已完成</div>
+            <div class="order-status" v-if="order.orderStatus == 2">已失效</div>
           </div>
         </el-card>
       </el-tab-pane>
-      <el-tab-pane label="未支付" name="未支付">未支付</el-tab-pane>
-      <el-tab-pane label="已完成" name="已完成">已完成</el-tab-pane>
-      <el-tab-pane label="已失效" name="已失效">已失效</el-tab-pane>
+      <el-tab-pane label="未支付" name="0">
+        <el-card v-for="order in orderList" :key="order.orderId">
+          <p class="order-number">
+            <i class="el-icon-cpu"></i>
+            <span>订单编号：</span>
+            <span>{{order.orderNumber}}</span>
+            <span class="time">{{order.orderTime}}</span>
+            <i class="el-icon-delete-solid delete" @click="changeIsenable(order.orderId)"></i>
+          </p>
+          <div class="goods-infos">
+            <el-image :src="order.course.cover"></el-image>
+            <div class="goods-name">
+              <p>{{order.course.courseName}}</p>
+            </div>
+            <div class="goods-price">
+              <span>实付：</span>
+              <span class="price">￥ {{order.orderMoney}}</span>
+            </div>
+            <div class="buttons" v-if="order.orderStatus == 0">
+              <el-button class="pay" @click="pay(order.orderId)">立即支付</el-button>
+              <el-button @click="changeStatus(order.orderNumber)">取消订单</el-button>
+            </div>
+          </div>
+        </el-card>
+      </el-tab-pane>
+      <el-tab-pane label="已完成" name="1">
+        <el-card v-for="order in orderList" :key="order.orderId">
+          <p class="order-number">
+            <i class="el-icon-cpu"></i>
+            <span>订单编号：</span>
+            <span>{{order.orderNumber}}</span>
+            <span class="time">{{order.orderTime}}</span>
+            <i class="el-icon-delete-solid delete" @click="changeIsenable(order.orderId)"></i>
+          </p>
+          <div class="goods-infos">
+            <el-image :src="order.course.cover"></el-image>
+            <div class="goods-name">
+              <p>{{order.course.courseName}}</p>
+            </div>
+            <div class="goods-price">
+              <span>实付：</span>
+              <span class="price">￥ {{order.orderMoney}}</span>
+            </div>
+            <div class="order-status" v-if="order.orderStatus == 1">已完成</div>
+          </div>
+        </el-card>
+      </el-tab-pane>
+      <el-tab-pane label="已失效" name="2">
+        <el-card v-for="order in orderList" :key="order.orderId">
+          <p class="order-number">
+            <i class="el-icon-cpu"></i>
+            <span>订单编号：</span>
+            <span>{{order.orderNumber}}</span>
+            <span class="time">{{order.orderTime}}</span>
+            <i class="el-icon-delete-solid delete" @click="changeIsenable(order.orderId)"></i>
+          </p>
+          <div class="goods-infos">
+            <el-image :src="order.course.cover"></el-image>
+            <div class="goods-name">
+              <p>{{order.course.courseName}}</p>
+            </div>
+            <div class="goods-price">
+              <span>实付：</span>
+              <span class="price">￥ {{order.orderMoney}}</span>
+            </div>
+            <div class="order-status" v-if="order.orderStatus == 2">已失效</div>
+          </div>
+        </el-card>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -111,14 +106,63 @@
     name: 'OrderCenter',
     data: function () {
       return {
-        activeName: '全部',
-        image: 'https://imoocs.oss-cn-shanghai.aliyuncs.com/img/d14e1b2d-5556-4d5f-9b09-1f55213c5ae7.jpg'
+        orderStatus: '-1',
+        orderList: []
       }
     },
     methods: {
       handleClick: function (tab, event) {
+        this.orderStatus = tab.name
+        this.findAllOrder()
+      },
+      pay: function (orderId) {
+        this.$router.push({
+          name: 'Pay',
+          query: { orderId: orderId }
+        })
+      },
+      changeIsenable: async function (orderId) {
+        const result = await this.$confirm('删除后，将无法再查看该订单，请谨慎操作！', '您确定要删除该订单吗？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).catch(err => err)
 
+        if (result !== 'confirm') {
+          return
+        }
+
+        const { data: res } = await this.$http.get(`OrdersController/changeIsenable/${orderId}`)
+        if (!res.meta.access) {
+          return this.$message.error(res.meta.msg)
+        }
+
+        this.$message.success(res.meta.msg)
+        this.findAllOrder()
+      },
+      changeStatus: async function (orderNumber) {
+        const { data: res } = await this.$http.get(`OrdersController/changeStatus/${orderNumber}/2`)
+        if (!res.meta.access) {
+          return this.$message.error(res.meta.msg)
+        }
+
+        this.$message.success(res.meta.msg)
+        this.findAllOrder()
+      },
+      findAllOrder: async function () {
+        let params = {
+          customerId: JSON.parse(sessionStorage.getItem('customer')).customerId,
+          orderStatus: this.orderStatus
+        }
+        const { data: res } = await this.$http.post('OrdersController/findAllOrder', params)
+        if (!res.meta.access) {
+          return this.$message.error(res.meta.msg)
+        }
+        this.orderList = res.data.orderList
       }
+    },
+    created: function () {
+      this.findAllOrder()
     }
   }
 </script>

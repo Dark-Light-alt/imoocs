@@ -19,9 +19,9 @@
               <span v-if="course.courseLevel == 2">中级</span>
               <span v-if="course.courseLevel == 3">高级</span>
               <span>
-                    <i class="el-icon-s-custom">{{course.numberOfStudents}}</i>
+                <i class="el-icon-user-solid"> {{course.numberOfStudents}}</i>
               </span>
-              <span style="float: right;">{{course.evaluates}}人评价</span>
+              <span style="float: right;">{{course.evaluates}} 人评价</span>
             </div>
             <div class="course-price">￥ {{course.price}}</div>
           </div>
@@ -40,7 +40,7 @@
               <h4>{{course.courseName}}</h4>
               <p>{{course.courseAbout}}</p>
               <div class="ourse-by-direction-info">
-                <i class="el-icon-s-custom">{{course.numberOfStudents}} 学习人数</i>
+                <i class="el-icon-user-solid"> {{course.numberOfStudents}} 学习人数</i>
               </div>
             </div>
           </div>
@@ -63,7 +63,7 @@
                   <span v-if="course.courseLevel == 2">中级</span>
                   <span v-if="course.courseLevel == 3">高级</span>
                   <span>
-                    <i class="el-icon-s-custom">{{course.numberOfStudents}}</i>
+                    <i class="el-icon-user-solid"> {{course.numberOfStudents}}</i>
                   </span>
                   <span style="float: right;">{{course.evaluates}}人评价</span>
                 </div>
@@ -85,7 +85,7 @@
                   <span v-if="course.courseLevel == 2">中级</span>
                   <span v-if="course.courseLevel == 3">高级</span>
                   <span>
-                    <i class="el-icon-user-solid">{{course.numberOfStudents}}</i>
+                    <i class="el-icon-user-solid"> {{course.numberOfStudents}}</i>
                   </span>
                   <span style="float: right;">{{course.evaluates}}人评价</span>
                 </div>

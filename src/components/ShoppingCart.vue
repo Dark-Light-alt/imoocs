@@ -78,13 +78,16 @@
       goPay: function () {
         let select = this.$refs.cart.store.states.selection
         if (select.length == 0) {
-          return this.$message.error('未选中课程')
+          return this.$message.error('未选中商品')
         }
-        let ids = []
-        for (let i = 0; i < select.length; i++) {
-          ids.push(select[i].shoppingCartId)
+        if (select.length > 1) {
+          return this.$message.error('一次只能结算一个商品')
         }
-        console.log(ids)
+
+        this.$router.push({
+          name: 'ConfirmOrder',
+          query: { courseId: select[0].courseId }
+        })
       }
     },
     created: function () {

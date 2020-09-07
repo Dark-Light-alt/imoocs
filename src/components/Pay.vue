@@ -1,21 +1,21 @@
 <template>
-  <div class="confirmOrder">
+  <div class="pay">
     <div class="header">
       <div class="header-content">
-        <h1>确认订单</h1>
+        <h1>支付中心</h1>
       </div>
     </div>
     <div class="content">
       <el-card class="top">
-        <p>商品信息</p>
+        <p>订单：{{order.orderNumber}}</p>
         <div class="course-info">
-          <el-image :src="course.cover"></el-image>
-          <div class="course-name">{{course.courseName}}</div>
-          <div class="course-price">￥{{course.price}}</div>
+          <el-image :src="order.course.cover"></el-image>
+          <div class="course-name">{{order.course.courseName}}</div>
+          <div class="course-price">￥{{order.orderMoney}}</div>
         </div>
         <div class="button">
-          <p>应付：<span class="price">￥{{course.price}}</span></p>
-          <el-button @click="addCourseOrder">提交订单</el-button>
+          <p>应付：<span class="price">￥{{order.orderMoney}}</span></p>
+          <el-button @click="pay">立即支付</el-button>
         </div>
       </el-card>
     </div>
@@ -27,38 +27,41 @@
     name: 'ConfirmOrder',
     data: function () {
       return {
-        courseId: this.$route.query.courseId,
-        course: {}
+        orderId: this.$route.query.orderId,
+        order: {}
       }
     },
     methods: {
-      findCourse: async function () {
-        const { data: res } = await this.$http.get(`CourseController/findById/${this.courseId}`)
+      findOrder: async function () {
+        const { data: res } = await this.$http.get(`OrdersController/findOrder/${this.orderId}`)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        this.course = res.data.course
+        this.order = res.data.order
       },
-      addCourseOrder: async function () {
-        let orders = {
-          customerId: JSON.parse(sessionStorage.getItem('customer')).customerId,
-          commodity: this.courseId,
-          orderMoney: this.course.price,
-          orderStatus: 0
+      pay: async function () {
+        let payDto = {
+          out_trade_no: this.order.orderNumber,
+          subject: this.order.course.courseName,
+          total_amount: this.order.orderMoney
         }
-        const { data: res } = await this.$http.put('OrdersController/addCourseOrder', orders)
+        const { data: res } = await this.$http.post('OrdersController/pay', payDto)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
 
-        this.$router.push({
-          name: 'Pay',
-          query: { orderId: res.data.orderId }
-        })
+        const divForm = document.getElementsByTagName('div')
+        if (divForm.length) {
+          document.body.removeChild(divForm[0])
+        }
+        const div = document.createElement('div')
+        div.innerHTML = res.data.payform
+        document.body.appendChild(div)
+        document.forms[0].submit()
       },
     },
     created: function () {
-      this.findCourse()
+      this.findOrder()
     }
   }
 </script>
