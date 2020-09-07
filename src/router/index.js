@@ -74,6 +74,11 @@ const routes = [
             name: 'MyMonograph',
             component:()=>import('../components/MyMonograph')
           },
+          {
+            path: '/myQuestionAndAnswer',
+            name: 'MyQuestionAndAnswer',
+            component:()=>import('../components/MyQuestionAndAnswer')
+          },
         ]
       },{
         path: '/principalSheet',
