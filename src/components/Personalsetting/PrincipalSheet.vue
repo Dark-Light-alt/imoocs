@@ -1,70 +1,62 @@
 <template>
-  <div class="myCourses">
-    <div class="header">
-      <div class="user-info">
-        <div class="user-pic">
-          <el-image :src="photo"></el-image>
+    <div class="principalSheet">
+      <div class="header">
+        <div class="user-info">
+          <div class="user-pic">
+            <el-image :src="photo"></el-image>
+          </div>
+          <div class="user-info-right">
+            <h3 class="user-name">
+              <span>{{name}}</span>
+            </h3>
+            <h3 class="person-name">
+              <el-button class="el-icon-setting" round>{{personname}}</el-button>
+            </h3>
+          </div>
         </div>
-        <div class="user-info-right">
-          <h3 class="user-name">
-            <span>{{name}}</span>
-          </h3>
-          <h3 class="person-name">
-            <el-button class="el-icon-setting" round @click="toprincipalSheet">{{personname}}</el-button>
-          </h3>
+      </div>
+      <div class="main">
+        <div class="slider">
+          <el-menu router>
+            <el-menu-item index="1-1" route="Accountbinding">
+              <i class="el-icon-menu"></i>
+              <span slot="title">账号绑定</span>
+            </el-menu-item>
+            <el-menu-item index="1-2" route="PersonalCenter">
+              <i class="el-icon-menu"></i>
+              <span slot="title">个人信息</span>
+            </el-menu-item>
+          </el-menu>
+        </div>
+        <div class="content">
+          <router-view></router-view>
         </div>
       </div>
     </div>
-    <div class="main">
-      <div class="slider">
-        <el-menu router>
-          <el-menu-item index="1-1" route="Test">
-            <i class="el-icon-menu"></i>
-            <span slot="title">收藏</span>
-          </el-menu-item>
-          <el-menu-item index="1-2" route="Test">
-            <i class="el-icon-menu"></i>
-            <span slot="title">笔记</span>
-          </el-menu-item>
-          <el-menu-item index="1-3" route="Test">
-            <i class="el-icon-menu"></i>
-            <span slot="title">专栏</span>
-          </el-menu-item>
-        </el-menu>
-      </div>
-      <div class="content">
-        <router-view></router-view>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
-  export default {
-    name: 'MyCourses',
-    data: function () {
-      return {
-        photo: 'https://img3.sycdn.imooc.com/5b8ce4920001e61c02000190-140-140.jpg',
-        name: '爱慕课',
-        personname:'个人设置'
-      }
-    },
-    methods:{
-      toprincipalSheet(){
-        this.$router.push('/principalSheet')
-      }
+    export default {
+        name: "PrincipalSheet",
+      data: function () {
+        return {
+          photo: 'https://img3.sycdn.imooc.com/5b8ce4920001e61c02000190-140-140.jpg',
+          name: '爱慕课',
+          personname:'个人设置'
+        }
+      },
+
     }
-  }
 </script>
 
 <style lang="less" scoped>
-  .myCourses {
+  .PersonalCenter {
     min-height: 750px;
   }
 
   .header {
     height: 148px;
-    background: url('../assets/img/user-info-header-background.png') no-repeat center top #000;
+    background: url('../../assets/img/user-info-header-background.png') no-repeat center top #000;
     background-size: cover;
 
     .user-info {

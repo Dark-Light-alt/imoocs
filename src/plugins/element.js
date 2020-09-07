@@ -29,6 +29,10 @@ import {
   Tabs,
   Tag,
   Tooltip,
+  Select,
+  Option,
+  Radio,
+  RadioGroup,
   Pagination, Menu, MenuItem
 } from 'element-ui'
 
@@ -65,4 +69,8 @@ Vue.use(Pagination)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Tooltip)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Radio)
+Vue.use(RadioGroup)
 

@@ -1,6 +1,5 @@
 <template>
   <div class="PersonalCenter">
-
     <el-button icon="el-icon-edit" title="修改" @click="updateDialogVisible = true" circle></el-button>
     <el-form label-position="right" :v-model="customerInfo">
       <el-form-item label="昵称：">
@@ -20,17 +19,20 @@
       </el-form-item>
     </el-form>
 
-    <el-dialog title="编辑个人信息" :visible.sync="updateDialogVisible" width="50%">
+    <el-dialog title="编辑个人信息" :visible.sync="updateDialogVisible" width="50%" @open="findById">
       <el-form :model="customerInfo" status-icon label-width="100px">
-        <el-form-item label="昵称">
+        <el-form-item label="昵称" prop="customerNickname">
           <el-input v-model="customerInfo.customerNickname"></el-input>
         </el-form-item>
-        <el-form-item label="电子邮箱">
+
+        <el-form-item label="电子邮箱" prop="customerEmail">
           <el-input v-model="customerInfo.customerEmail"></el-input>
         </el-form-item>
-        <el-form-item label="联系方式">
+
+        <el-form-item label="联系方式" prop="customerPhone">
           <el-input v-model="customerInfo.customerPhone"></el-input>
         </el-form-item>
+
         <el-form-item label="职位" prop="positionId">
           <el-select v-model="customerInfo.positionId" placeholder="请选择">
             <el-option v-for="item in positionListInfo" :key="item.positionId" :label="item.positionName"
@@ -38,18 +40,19 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="地址">
+
+        <el-form-item label="地址" prop="customerAddress">
           <el-input v-model="customerInfo.customerAddress"></el-input>
         </el-form-item>
 
-        <el-form-item label="性别">
+        <!--<el-form-item label="性别" prop="customerSex">
           <el-radio-group v-model="customerInfo.customerSex">
             <el-radio :label="0">男</el-radio>
             <el-radio :label="1">女</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item>-->
 
-        <el-form-item label="个人简介">
+        <el-form-item label="个人简介" prop="personalAbout">
           <el-input v-model="customerInfo.personalAbout"></el-input>
         </el-form-item>
       </el-form>
@@ -66,7 +69,7 @@
         name: "PersonalCenter",
       data() {
         return {
-          customerInfo: [],
+          customerInfo: {},
           positionListInfo:[],
           updateDialogVisible: false,
           updateCustomerInfo: {
@@ -87,11 +90,12 @@
       methods: {
         findById: async function () {
           const customerId = JSON.parse(sessionStorage.getItem("customer")).customerId
-          const {data: res} = await this.$http.get(`CustomerController/findById/${customerId}`)
+          const {data: res} = await this.$http.get(`CustomerController/findPosition/${customerId}`)
           if (!res.meta.access) {
             return this.$message.error(res.meta.msg)
           }
           this.customerInfo = res.data.customer
+          console.log(res.data.customer)
 
           const { data: position } = await this.$http.get('CustomerPositionController/findAll')
           if (!position.meta.access) {
@@ -99,8 +103,9 @@
           }
           this.positionListInfo = position.data.positionList
 
-          console.log(position.data.positionList.positionName)
-          console.log(this.positionListInfo.positionName)
+          console.log(position.data.positionList)
+          console.log(this.positionListInfo[0].positionId)
+          console.log(this.positionListInfo[0].positionName)
         },
         update: async function () {
           const {data: res} = await this.$http.put('CustomerController/update', this.customerInfo)
@@ -119,4 +124,5 @@
 </script>
 
 <style scoped>
+
 </style>

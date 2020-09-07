@@ -49,15 +49,23 @@ const routes = [
             name: 'Test',
             component: () => import('../components/Test')
           },
+        ]
+      },
+      {
+        path: '/principalSheet',
+        name: 'PrincipalSheet',
+        component:()=>import('../components/Personalsetting/PrincipalSheet'),
+        children: [
+
           {
             path: '/personalCenter',
             name: 'PersonalCenter',
-            component:()=>import('../components/PersonalCenter')
+            component:()=>import('../components/Personalsetting/PersonalCenter')
           },
           {
             path: '/accountbinding',
             name: 'Accountbinding',
-            component:()=>import('../components/Accountbinding')
+            component:()=>import('../components/Personalsetting/Accountbinding')
           }
         ]
       }

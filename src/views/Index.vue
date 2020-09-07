@@ -56,7 +56,7 @@
       <el-main>
         <router-view></router-view>
       </el-main>
-      <el.-footer height="100px">
+      <el-footer height="100px">
         <ul>
           <li>
             <router-link :to="{name: 'Home'}">网站首页</router-link>
@@ -71,7 +71,7 @@
             <a>意见反馈</a>
           </li>
         </ul>
-      </el.-footer>
+      </el-footer>
     </el-container>
     <LoginAndRegister :isShow="loginDialog.isShow" :name="loginDialog.name"
                       @dialog-cancel="loginDialog.isShow = false"></LoginAndRegister>
