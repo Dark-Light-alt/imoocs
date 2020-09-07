@@ -30,6 +30,10 @@
             <i class="el-icon-menu"></i>
             <span slot="title">专栏</span>
           </el-menu-item>
+          <el-menu-item index="1-4" route="MyQuestionAndAnswer">
+            <i class="el-icon-menu"></i>
+            <span slot="title">问答</span>
+          </el-menu-item>
         </el-menu>
       </div>
       <div class="content">
