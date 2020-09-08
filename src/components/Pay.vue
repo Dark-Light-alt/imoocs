@@ -45,6 +45,7 @@
           subject: this.order.course.courseName,
           total_amount: this.order.orderMoney
         }
+        sessionStorage.setItem('order', JSON.stringify(this.order))
         const { data: res } = await this.$http.post('OrdersController/pay', payDto)
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)

@@ -15,6 +15,28 @@ const routes = [
         component: () => import('../components/Home')
       },
       {
+        path: '/personalSetting',
+        name: 'PersonalSetting',
+        component: () => import('../components/personalsetting/PersonalSetting'),
+        children: [
+          {
+            path: '/accountSetting',
+            name: 'AccountSetting',
+            component: () => import('../components/personalsetting/AccountSetting')
+          },
+          {
+            path: '/personalInfo',
+            name: 'PersonalInfo',
+            component: () => import('../components/personalsetting/PersonalInfo')
+          },
+          {
+            path: '/realNameSystem',
+            name: 'RealNameSystem',
+            component: () => import('../components/personalsetting/RealNameSystem')
+          }
+        ]
+      },
+      {
         path: '/inform',
         name: 'Inform',
         component: () => import('../components/Inform')
@@ -70,6 +92,11 @@ const routes = [
         component: () => import('../components/Monograph')
       },
       {
+        path: '/monographDetials',
+        name: 'MonographDetials',
+        component: () => import('../components/MonographDetials'),
+      },
+      {
         path: '/shoppingCart',
         name: 'ShoppingCart',
         component: () => import('../components/ShoppingCart')
@@ -100,28 +127,6 @@ const routes = [
             component:()=>import('../components/MyQuestionAndAnswer')
           }
         ]
-      },
-      {
-        path: '/monographDetials',
-        name: 'MonographDetials',
-        component: () => import('../components/MonographDetials'),
-      }
-    ]
-  },
-  {
-    path: '/principalSheet',
-    name: 'PrincipalSheet',
-    component: () => import('../components/Personalsetting/PrincipalSheet'),
-    children: [
-      {
-        path: '/personalCenter',
-        name: 'PersonalCenter',
-        component: () => import('../components/Personalsetting/PersonalCenter')
-      },
-      {
-        path: '/accountbinding',
-        name: 'Accountbinding',
-        component: () => import('../components/Personalsetting/Accountbinding')
       }
     ]
   },
