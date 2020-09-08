@@ -13,9 +13,10 @@
                 <div class="detials">
                   <h3 @click="monographDetials(item.monograph)">{{item.monograph.monographName}}</h3>
                   <h5>{{item.monograph.highlights}}</h5>
-                  <el-tag type="danger">已学习</el-tag>
+                  <el-tag type="danger" v-if="item.monograph.offShelf==3">已下架</el-tag>
+                  <el-tag type="danger" v-if="item.monograph.offShelf!=3">已学习</el-tag>
                   <div style="float: right;">
-                    <el-button type="danger" round @click="monographDetials(item.monograph)">查看详情</el-button>
+                    <el-button type="danger" round @click="monographDetials(item.monograph)" v-if="item.monograph.offShelf!=3">查看详情</el-button>
                   </div>
                 </div>
               </div>
@@ -45,9 +46,13 @@
           console.log(this.myMonographs);
         },
         monographDetials:function(item){
-          sessionStorage.setItem("monograph",JSON.stringify(item));
-          //跳转到专刊详情页面
-          this.$router.push({name:"MonographDetials"});
+          if(item.offShelf==3){
+            this.$message.warning("专刊已下架");
+          }else{
+            sessionStorage.setItem("monograph",JSON.stringify(item));
+            //跳转到专刊详情页面
+            this.$router.push({name:"MonographDetials"});
+          }
         }
       },
       created:function(){
