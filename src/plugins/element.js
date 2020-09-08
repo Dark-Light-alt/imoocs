@@ -41,7 +41,8 @@ import {
   TabPane,
   Tabs,
   Tag,
-  Tooltip
+  Tooltip,
+  Upload
 } from 'element-ui'
 
 Vue.prototype.$message = Message
@@ -88,3 +89,4 @@ Vue.use(PageHeader)
 Vue.use(Drawer)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
+Vue.use(Upload)

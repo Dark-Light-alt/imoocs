@@ -45,7 +45,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-s-management" command="MyCourse">我的课程</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-s-order" command="OrderCenter">订单中心</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-s-tools" command="MyLearn">个人设置</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-s-tools" command="AccountSetting">个人设置</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-switch-button" @click.native="logout" divided>安全退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>

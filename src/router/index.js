@@ -15,6 +15,28 @@ const routes = [
         component: () => import('../components/Home')
       },
       {
+        path: '/personalSetting',
+        name: 'PersonalSetting',
+        component: () => import('../components/personalSetting/PersonalSetting'),
+        children: [
+          {
+            path: '/accountSetting',
+            name: 'AccountSetting',
+            component: () => import('../components/personalSetting/AccountSetting')
+          },
+          {
+            path: '/personalInfo',
+            name: 'PersonalInfo',
+            component: () => import('../components/personalSetting/PersonalInfo')
+          },
+          {
+            path: '/realNameSystem',
+            name: 'RealNameSystem',
+            component: () => import('../components/personalSetting/RealNameSystem')
+          }
+        ]
+      },
+      {
         path: '/inform',
         name: 'Inform',
         component: () => import('../components/Inform')
@@ -65,6 +87,11 @@ const routes = [
         component: () => import('../components/Pay')
       },
       {
+        path: '/successPay',
+        name: 'SuccessPay',
+        component: () => import('../components/SuccessPay')
+      },
+      {
         path: '/monograph',
         name: 'Monograph',
         component: () => import('../components/Monograph')
@@ -100,23 +127,6 @@ const routes = [
         path: '/monographDetials',
         name: 'MonographDetials',
         component: () => import('../components/MonographDetials'),
-      },
-      {
-        path: '/principalSheet',
-        name: 'PrincipalSheet',
-        component: () => import('../components/Personalsetting/PrincipalSheet'),
-        children: [
-          {
-            path: '/personalCenter',
-            name: 'PersonalCenter',
-            component: () => import('../components/Personalsetting/PersonalCenter')
-          },
-          {
-            path: '/accountbinding',
-            name: 'Accountbinding',
-            component: () => import('../components/Personalsetting/Accountbinding')
-          }
-        ]
       }
     ]
   },
