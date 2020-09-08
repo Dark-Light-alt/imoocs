@@ -24,7 +24,6 @@
             <el-image :src="item.employeeInfo.photo"></el-image>
             <span class="name">{{item.employeeInfo.employeeName}}</span> /
             <span>{{item.employeeInfo.position.positionName}}</span>
-            <span class="price">￥ {{item.price}}</span>
           </div>
         </div>
       </el-card>

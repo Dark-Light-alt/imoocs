@@ -93,6 +93,11 @@ const routes = [
             path: '/myMonograph',
             name: 'MyMonograph',
             component: () => import('../components/MyMonograph')
+          },
+          {
+            path: '/myQuestionAndAnswer',
+            name: 'MyQuestionAndAnswer',
+            component:()=>import('../components/MyQuestionAndAnswer')
           }
         ]
       },
@@ -100,32 +105,23 @@ const routes = [
         path: '/monographDetials',
         name: 'MonographDetials',
         component: () => import('../components/MonographDetials'),
+      }
+    ]
+  },
+  {
+    path: '/principalSheet',
+    name: 'PrincipalSheet',
+    component: () => import('../components/Personalsetting/PrincipalSheet'),
+    children: [
+      {
+        path: '/personalCenter',
+        name: 'PersonalCenter',
+        component: () => import('../components/Personalsetting/PersonalCenter')
       },
       {
-            component:()=>import('../components/MyMonograph')
-          },
-          {
-            path: '/myQuestionAndAnswer',
-            name: 'MyQuestionAndAnswer',
-            component:()=>import('../components/MyQuestionAndAnswer')
-          },
-        ]
-      },{
-        path: '/principalSheet',
-        name: 'PrincipalSheet',
-        component: () => import('../components/Personalsetting/PrincipalSheet'),
-        children: [
-          {
-            path: '/personalCenter',
-            name: 'PersonalCenter',
-            component: () => import('../components/Personalsetting/PersonalCenter')
-          },
-          {
-            path: '/accountbinding',
-            name: 'Accountbinding',
-            component: () => import('../components/Personalsetting/Accountbinding')
-          }
-        ]
+        path: '/accountbinding',
+        name: 'Accountbinding',
+        component: () => import('../components/Personalsetting/Accountbinding')
       }
     ]
   },
@@ -140,6 +136,7 @@ const routes = [
     component: () => import('../components/Article')
   }
 ]
+
 
 const router = new VueRouter({
   routes

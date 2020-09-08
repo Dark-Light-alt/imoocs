@@ -1,6 +1,5 @@
 <template>
-    <div class="main">
-      <div style="margin: 20px">
+    <div>
         <el-tabs v-model="activeName">
           <el-tab-pane label="我的专刊" name="first">
             <div v-for="(item,index) in myMonographs" :key="index">
@@ -14,7 +13,7 @@
                 <div class="detials">
                   <h3 @click="monographDetials(item.monograph)">{{item.monograph.monographName}}</h3>
                   <h5>{{item.monograph.highlights}}</h5>
-                  <el-tag type="danger">已购买</el-tag>
+                  <el-tag type="danger">已学习</el-tag>
                   <div style="float: right;">
                     <el-button type="danger" round @click="monographDetials(item.monograph)">查看详情</el-button>
                   </div>
@@ -23,7 +22,6 @@
             </div>
           </el-tab-pane>
         </el-tabs>
-      </div>
     </div>
 </template>
 
@@ -59,12 +57,6 @@
 </script>
 
 <style scoped>
-  .main{
-    width: 100%;
-    overflow-y: auto;
-    background-color: rgb(255,255,255);
-  }
-
   .content{
     height: 200px;
     padding-bottom: 20px;

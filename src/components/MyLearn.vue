@@ -19,6 +19,7 @@
             <el-menu-item index="1" :route="{name: 'MyCourse'}"><i class="el-icon-reading"></i>我的课程</el-menu-item>
             <el-menu-item index="2" :route="{name: 'MyFavorite'}"><i class="el-icon-collection"></i>我的收藏</el-menu-item>
             <el-menu-item index="3" :route="{name: 'MyMonograph'}"><i class="el-icon-notebook-2"></i>我的专栏</el-menu-item>
+            <el-menu-item index="4" :route="{name: 'MyQuestionAndAnswer'}"><i class="el-icon-question"></i>我的问答</el-menu-item>
           </el-menu>
         </el-aside>
         <el-main>
