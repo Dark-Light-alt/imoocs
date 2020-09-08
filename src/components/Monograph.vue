@@ -20,14 +20,8 @@
           <div class="info">
             <h3 @click="monographDetials(item)">{{item.monographName}}</h3>
             <h5>{{item.highlights}}</h5>
-            <div v-for="(chapter,index) in item.chapterList" :key="index">
-              <span class="article" v-for="article in chapter.articleList" :key="article.articleId" @click="readArticle(article.articleId,item)">
-                <el-tag v-if="article.tryReading==1" type="primary" size="mini">试读</el-tag>
-                <span>{{article.articleName}}</span>
-              </span>
-            </div>
             <!--员工头像-->
-            <el-image :src="item.photo"></el-image>
+            <el-image :src="item.employeeInfo.photo"></el-image>
             <span class="name">{{item.employeeInfo.employeeName}}</span> /
             <span>{{item.employeeInfo.position.positionName}}</span>
             <span class="price">￥ {{item.price}}</span>
@@ -55,11 +49,6 @@
           return this.$message.error(res.meta.msg)
         }
         this.monographList = res.data.monographList;
-      },readArticle:function(articleId,item){
-        //把当前专刊存进sessionStory
-        sessionStorage.setItem("monograph",JSON.stringify(item));
-        //跳转到文章页面
-        this.$router.push({name:"Article",query:{articleId:articleId}});
       },monographDetials(item){
         sessionStorage.setItem("monograph",JSON.stringify(item));
         //跳转到专刊详情页面
