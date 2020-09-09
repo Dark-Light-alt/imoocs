@@ -4,12 +4,12 @@
       <div class="inner" style="padding-top: 15px;">
         <el-image :src="monograph.cover" style="float: left;height: 200px;width: 150px; border-radius: 5px;"></el-image>
         <div style="margin-left: 180px;color: white;margin-top: 25px">
-          <div style="font-size: 25px;padding: 5px 0 5px 0">{{monograph.monographName}}</div>
-          <div style="padding: 5px 0 5px 0">
+          <div style="font-size: 25px;">{{monograph.monographName}}</div>
+          <div class="highlights">
             {{monograph.highlights}}
             <span style="color: rgb(129,159,179);font-size: 15px">{{monograph.employeeInfo.employeeName}} / {{monograph.employeeInfo.position.positionName}}</span>
           </div>
-          <div style="margin-top: 5px">
+          <div style="margin-top: 20px">
             <el-button round type="primary"
                        @click="readArticle(chapters.chapterList[0].articleList[0].articleId)">立即阅读
             </el-button>
@@ -37,7 +37,6 @@
               </div>
             </div>
           </el-card>
-
         </el-tab-pane>
         <el-tab-pane label="课程目录">
           <el-card>
@@ -183,6 +182,12 @@
     text-align: center;
     height: 100px;
     line-height: 100px;
+  }
+
+  .highlights{
+    padding: 5px 0 5px 0;
+    line-height: 20px;
+    margin-top: 15px
   }
 
 </style>

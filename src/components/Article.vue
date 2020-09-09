@@ -7,7 +7,7 @@
       </el-header>
       <el-container>
         <el-aside width="325px" class="el-aside">
-          <div style="margin-left: 15px;overflow:auto;height:1100px">
+          <div style="margin-left: 15px;overflow:auto;height:1000px">
             <div style="font-size:20px;margin: 10px 0 10px 0;font-family: 微软雅黑">目录</div>
             <div v-for="(monograph,i) in monographList" :key="i">
               <div v-for="(chapter,j) in monograph.chapterList" :key="j">
@@ -31,7 +31,7 @@
                   style="width: 100px; height: 130px"
                   :src="monograph.cover"></el-image>
               </div>
-              <div style="float: left;margin-left: 15px;text-align: left;height: 110px">
+              <div style="float: left;margin-left: 15px;text-align: left;height: 110px;margin-top: 20px">
                 <span style="font-size: 20px;font-weight: bold">{{monograph.monographName}}</span>
                 <div class="hightlights">
                   {{monograph.highlights}}
@@ -170,10 +170,10 @@
     font-size: 13px;
     font-family: 微软雅黑;
     color: gray;
-    height: 30px;
     width: 500px;
     font-weight: bold;
-    padding: 10px 0 20px 0;
+    line-height: 20px;
+    margin-top: 15px;
   }
 
 
