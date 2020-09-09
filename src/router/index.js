@@ -17,22 +17,22 @@ const routes = [
       {
         path: '/personalSetting',
         name: 'PersonalSetting',
-        component: () => import('../components/personalsetting/PersonalSetting'),
+        component: () => import('../components/personalSetting/PersonalSetting'),
         children: [
           {
             path: '/accountSetting',
             name: 'AccountSetting',
-            component: () => import('../components/personalsetting/AccountSetting')
+            component: () => import('../components/personalSetting/AccountSetting')
           },
           {
             path: '/personalInfo',
             name: 'PersonalInfo',
-            component: () => import('../components/personalsetting/PersonalInfo')
+            component: () => import('../components/personalSetting/PersonalInfo')
           },
           {
             path: '/realNameSystem',
             name: 'RealNameSystem',
-            component: () => import('../components/personalsetting/RealNameSystem')
+            component: () => import('../components/personalSetting/RealNameSystem')
           }
         ]
       },
@@ -124,7 +124,7 @@ const routes = [
           {
             path: '/myQuestionAndAnswer',
             name: 'MyQuestionAndAnswer',
-            component:()=>import('../components/MyQuestionAndAnswer')
+            component: () => import('../components/MyQuestionAndAnswer')
           }
         ]
       }
@@ -141,7 +141,6 @@ const routes = [
     component: () => import('../components/Article')
   }
 ]
-
 
 const router = new VueRouter({
   routes

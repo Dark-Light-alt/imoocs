@@ -74,56 +74,58 @@
     data: function () {
       return {
         monograph: {},
-        loginDialog:{
-          isShow:false,
-          name:'login'
+        loginDialog: {
+          isShow: false,
+          name: 'login'
         },
         chapters: {
           chapterList: []
         },
-        myMonograph:{
-          customerId:'',
-          monographId:''
+        myMonograph: {
+          customerId: '',
+          monographId: ''
         }
       }
     },
     methods: {
       //查询专刊
       findChapter: async function () {
-        const {data: res} = await this.$http.post('MonographController/previewMonograph', {
+        const { data: res } = await this.$http.post('MonographController/previewMonograph', {
           monographId: this.monograph.monographId
-        });
+        })
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        this.chapters = res.data.monograph;
+        this.chapters = res.data.monograph
       },
-      readArticle:async function (articleId) {
+      readArticle: async function (articleId) {
         //判断是否登陆
         //未登录不能看文章
-        let customer = JSON.parse(sessionStorage.getItem("customer"));
+        let customer = JSON.parse(sessionStorage.getItem('customer'))
         //没登陆
-        if(null==customer){
-          this.loginDialog.isShow=true;
-        }else
-        {
-          this.myMonograph.customerId=customer.customerId;
-          this.myMonograph.monographId=this.monograph.monographId;
-          const {data:res} = await this.$http.post("MyMonographController/append",this.myMonograph);
+        if (null == customer) {
+          this.loginDialog.isShow = true
+        } else {
+          this.myMonograph.customerId = customer.customerId
+          this.myMonograph.monographId = this.monograph.monographId
+          const { data: res } = await this.$http.post('MyMonographController/append', this.myMonograph)
 
-          if(!res.meta.access){
-            this.$message.error(res.meta.msg);
+          if (!res.meta.access) {
+            this.$message.error(res.meta.msg)
           }
-          sessionStorage.setItem("monograph", JSON.stringify(this.monograph));
+          sessionStorage.setItem('monograph', JSON.stringify(this.monograph))
           //跳转到文章页面
-          this.$router.push({name: "Article", query: {articleId: articleId}});
+          this.$router.push({
+            name: 'Article',
+            query: { articleId: articleId }
+          })
         }
       }
     },
     created: function () {
       //获取参数
-      this.monograph = JSON.parse(sessionStorage.getItem("monograph"));
-      this.findChapter();
+      this.monograph = JSON.parse(sessionStorage.getItem('monograph'))
+      this.findChapter()
     },
     components: {
       LoginAndRegister
@@ -184,7 +186,7 @@
     line-height: 100px;
   }
 
-  .highlights{
+  .highlights {
     padding: 5px 0 5px 0;
     line-height: 20px;
     margin-top: 15px

@@ -11,7 +11,9 @@
             <i class="el-icon-delete-solid delete" @click="changeIsenable(order.orderId)"></i>
           </p>
           <div class="goods-infos">
-            <el-image :src="order.course.cover"></el-image>
+            <a @click="toCourse(order.course.courseId)">
+              <el-image :src="order.course.cover"></el-image>
+            </a>
             <div class="goods-name">
               <p>{{order.course.courseName}}</p>
             </div>
@@ -65,7 +67,7 @@
           <div class="goods-infos">
             <el-image :src="order.course.cover"></el-image>
             <div class="goods-name">
-              <p>{{order.course.courseName}}</p>
+              <p @click="toCourse()">{{order.course.courseName}}</p>
             </div>
             <div class="goods-price">
               <span>实付：</span>
@@ -111,6 +113,12 @@
       }
     },
     methods: {
+      toCourse: function (courseId) {
+        this.$router.push({
+          name: 'PracticeCourseBuy',
+          query: { courseId: courseId }
+        })
+      },
       handleClick: function (tab, event) {
         this.orderStatus = tab.name
         this.findAllOrder()

@@ -37,7 +37,7 @@
             <li>
               <router-link class="mycourse" :to="{name: 'MyCourse'}">我的课程</router-link>
             </li>
-            <li>
+            <li v-if="null !== customer">
               <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
                 <el-avatar :src="customer.customerPhoto"></el-avatar>
@@ -120,10 +120,8 @@
         this.$router.push({ name: command })
       },
       refresh: function () {
-        this.$router.push({
-          path: '/refresh',
-          query: { path: this.$route.fullPath }
-        })
+        this.customer = JSON.parse(sessionStorage.getItem('customer'))
+        this.$router.push({ name: 'Home' })
       }
     },
     created: function () {

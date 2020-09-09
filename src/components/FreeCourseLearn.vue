@@ -76,7 +76,7 @@
               <div class="score">{{rateInfo}}</div>
               <el-rate v-model="rateInfo" disabled></el-rate>
             </el-card>
-            <el-button class="send-evaluate" @click="evaluateVisible = true">我要评价</el-button>
+            <el-button class="send-evaluate" @click="showEvaluateVisible">我要评价</el-button>
             <el-card class="evaluate" v-for="evaluate in evaluateList" :key="evaluate.evaluateId">
               <el-image :src="evaluate.customer.customerPhoto"></el-image>
               <div class="content-box">
@@ -125,14 +125,25 @@
         <el-button type="primary" @click="sendEvaluate">发表评价</el-button>
       </span>
     </el-dialog>
+    <LoginAndRegister :isShow="loginDialog.isShow" :name="loginDialog.name"
+                      @dialog-cancel="loginDialog.isShow = false"></LoginAndRegister>
   </div>
 </template>
 
 <script>
+  import LoginAndRegister from '@/components/LoginAndRegister'
+
   export default {
     name: 'FreeCourseLearn',
+    components: {
+      LoginAndRegister
+    },
     data: function () {
       return {
+        loginDialog: {
+          isShow: false,
+          name: 'login'
+        },
         activeName: '课程章节',
         courseId: this.$route.query.courseId,
         course: {},
@@ -150,6 +161,12 @@
       }
     },
     methods: {
+      showEvaluateVisible: function () {
+        this.isLoginShow()
+        if (this.loginDialog.isShow === false) {
+          this.evaluateVisible = true
+        }
+      },
       sendEvaluate: async function () {
         this.evaluate.author = JSON.parse(sessionStorage.getItem('customer')).customerId
         this.evaluate.evaluateBeResource = this.courseId
@@ -164,28 +181,34 @@
         this.rate()
       },
       giveALike: async function (evaluateId) {
-        const { data: res } = await this.$http.get(`EvaluateController/giveALike/${evaluateId}`)
-        if (!res.meta.access) {
-          return this.$message.error(res.meta.msg)
+        this.isLoginShow()
+        if (this.loginDialog.isShow === false) {
+          const { data: res } = await this.$http.get(`EvaluateController/giveALike/${evaluateId}`)
+          if (!res.meta.access) {
+            return this.$message.error(res.meta.msg)
+          }
+          this.findEvaluate()
         }
-        this.findEvaluate()
       },
       courseLearn: async function (videoId) {
-        let params = {
-          customerId: JSON.parse(sessionStorage.getItem('customer')).customerId,
-          courseId: this.courseId
-        }
-        const { data: res } = await this.$http.put('MyCourseController/append', params)
-        if (!res.meta.access) {
-          return this.$message.error(res.meta.msg)
-        }
-        this.$router.push({
-          name: 'CourseLearn',
-          query: {
-            courseId: this.courseId,
-            videoId: videoId
+        this.isLoginShow()
+        if (this.loginDialog.isShow === false) {
+          let params = {
+            customerId: JSON.parse(sessionStorage.getItem('customer')).customerId,
+            courseId: this.courseId
           }
-        })
+          const { data: res } = await this.$http.put('MyCourseController/append', params)
+          if (!res.meta.access) {
+            return this.$message.error(res.meta.msg)
+          }
+          this.$router.push({
+            name: 'CourseLearn',
+            query: {
+              courseId: this.courseId,
+              videoId: videoId
+            }
+          })
+        }
       },
       rate: async function () {
         const { data: res } = await this.$http.get(`EvaluateController/rate/${this.courseId}`)
@@ -209,14 +232,17 @@
         this.questionList = res.data.questionList
       },
       answer: async function (questionId) {
-        const { data: res } = await this.$http.get(`QuestionController/browse/${questionId}`)
-        if (!res.meta.access) {
-          return this.$message.error(res.meta.msg)
+        this.isLoginShow()
+        if (this.loginDialog.isShow === false) {
+          const { data: res } = await this.$http.get(`QuestionController/browse/${questionId}`)
+          if (!res.meta.access) {
+            return this.$message.error(res.meta.msg)
+          }
+          this.$router.push({
+            name: 'Answer',
+            query: { questionId: questionId }
+          })
         }
-        this.$router.push({
-          name: 'Answer',
-          query: { questionId: questionId }
-        })
       },
       findCourse: async function () {
         const { data: res } = await this.$http.get(`CourseController/previewCourse/${this.courseId}`)
@@ -226,16 +252,19 @@
         this.course = res.data.course
       },
       favorite: async function () {
-        let params = {
-          courseId: this.courseId,
-          customerId: JSON.parse(sessionStorage.getItem('customer')).customerId
-        }
+        this.isLoginShow()
+        if (this.loginDialog.isShow === false) {
+          let params = {
+            courseId: this.courseId,
+            customerId: JSON.parse(sessionStorage.getItem('customer')).customerId
+          }
 
-        const { data: res } = await this.$http.put('FavoritesController/append', params)
-        if (!res.meta.access) {
-          return this.$message.error(res.meta.msg)
+          const { data: res } = await this.$http.put('FavoritesController/append', params)
+          if (!res.meta.access) {
+            return this.$message.error(res.meta.msg)
+          }
+          this.$message.success(res.meta.msg)
         }
-        this.$message.success(res.meta.msg)
       },
       showTime (time) {
         if (time < 60) {
@@ -296,6 +325,12 @@
         }).then(response => {
           this.download(response)
         })
+      },
+      isLoginShow: function () {
+        let customer = JSON.parse(sessionStorage.getItem('customer'))
+        if (undefined === customer || null === customer) {
+          this.loginDialog.isShow = true
+        }
       }
     },
     created: function () {

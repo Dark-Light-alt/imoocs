@@ -33,7 +33,8 @@
               <p>{{answer.content}}</p>
               <div class="comment-info">
                 <span class="create-time">{{answer.createTime}}</span>
-                <span class="report" v-if="answer.publisher !== customerId" @click="report(3,answer.publisher,answer.answerId)">举报</span>
+                <span class="report" v-if="answer.publisher !== customerId"
+                      @click="report(3,answer.publisher,answer.answerId)">举报</span>
                 <span class="like el-icon-thumb" @click="like(answer.answerId)"> {{answer.likes}}</span>
               </div>
             </div>

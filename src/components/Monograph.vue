@@ -1,7 +1,7 @@
 <template>
   <div class="monograph">
     <div class="header">
-        <div class="inner">
+      <div class="inner">
         <el-image :src="require('@/assets/img/monograph-log.png')"></el-image>
         <p>
           共
@@ -40,21 +40,23 @@
         monographList: []
       }
     },
-    methods:{
+    methods: {
       //查询所有专刊
       findMonographList: async function () {
-        const {data: res} = await this.$http.get('MonographController/listAllMonograph');
+        const { data: res } = await this.$http.get('MonographController/listAllMonograph')
         if (!res.meta.access) {
           return this.$message.error(res.meta.msg)
         }
-        this.monographList = res.data.monographList;
-      },monographDetials(item){
-        sessionStorage.setItem("monograph",JSON.stringify(item));
+        this.monographList = res.data.monographList
+      },
+      monographDetials (item) {
+        sessionStorage.setItem('monograph', JSON.stringify(item))
         //跳转到专刊详情页面
-        this.$router.push({name:"MonographDetials"});
+        this.$router.push({ name: 'MonographDetials' })
       }
-    },created:function(){
-      this.findMonographList();
+    },
+    created: function () {
+      this.findMonographList()
     }
   }
 </script>

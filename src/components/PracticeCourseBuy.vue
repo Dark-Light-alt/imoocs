@@ -67,14 +67,26 @@
       <h3 style="margin-top: 0px;margin-bottom: 35px">{{videoName}}</h3>
       <video :src="videoUrl" controls="controls"></video>
     </el-dialog>
+
+    <LoginAndRegister :isShow="loginDialog.isShow" :name="loginDialog.name"
+                      @dialog-cancel="loginDialog.isShow = false"></LoginAndRegister>
   </div>
 </template>
 
 <script>
+  import LoginAndRegister from '@/components/LoginAndRegister.vue'
+
   export default {
     name: 'PracticeCourseBuy',
+    components: {
+      LoginAndRegister
+    },
     data: function () {
       return {
+        loginDialog: {
+          isShow: false,
+          name: 'login'
+        },
         activeName: '课程介绍',
         courseId: this.$route.query.courseId,
         course: {},
@@ -84,13 +96,17 @@
       }
     },
     methods: {
-      buy: async function () {
-        this.$router.push({
-          name: 'ConfirmOrder',
-          query: { courseId: this.courseId }
-        })
+      buy: function () {
+        this.isLoginShow()
+        if (this.loginDialog.isShow == false) {
+          this.$router.push({
+            name: 'ConfirmOrder',
+            query: { courseId: this.courseId }
+          })
+        }
       },
       addShoppingCart: async function () {
+        this.isLoginShow()
         let shoppingCartInfo = {
           courseId: this.courseId,
           customerId: JSON.parse(sessionStorage.getItem('customer')).customerId
@@ -114,6 +130,7 @@
         this.course = res.data.course
       },
       favorite: async function () {
+        this.isLoginShow()
         let params = {
           courseId: this.courseId,
           customerId: JSON.parse(sessionStorage.getItem('customer')).customerId
@@ -152,6 +169,12 @@
         let totalHour = Math.floor(totalMin / 60)
         let min = Math.floor(totalMin % 60)
         return totalHour + '小时' + min + '分'
+      },
+      isLoginShow: function () {
+        let customer = JSON.parse(sessionStorage.getItem('customer'))
+        if (undefined === customer || null === customer) {
+          this.loginDialog.isShow = true
+        }
       }
     },
     created: function () {
