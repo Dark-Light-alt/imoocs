@@ -23,7 +23,9 @@
             <span>{{answer.video.videoName}}</span>
           </div>
           <div style="font-size: 23px;font-weight: bold;margin-bottom: 20px">{{answer.question.title}}</div>
-          <div style="font-size: 17px;font-weight: bold">我的回答:</div>
+          <div style="height: 40px;line-height: 40px">
+            <span style="font-size: 17px;font-weight: bold;">我的回答</span>
+          </div>
           <div class="content" @click="showDetials(answer.question.questionId)">{{answer.content}}</div>
           <span style="font-size: 13px;color: rgb(145,153,161);">{{answer.createTime}}</span>
         </el-card>
@@ -53,14 +55,14 @@
         findQuestionByCustomer:async function(){
           const {data: res} = await this.$http.get(`QuestionController/findByCustomer/${this.customer.customerId}`);
           if(!res.meta.access){
-            this.$message.error(res.meta.msg);
+            return this.$message.error(res.meta.msg);
           }
           this.questionList = res.data.questionList;
         },
         findAnswerByCustomer:async function(){
           const {data:res} = await this.$http.get(`AnswerController/findByCustomer/${this.customer.customerId}`);
           if(!res.meta.access){
-            this.$message.error(res.meta.msg);
+            return this.$message.error(res.meta.msg);
           }
           this.answerList=res.data.answerList;
         },
